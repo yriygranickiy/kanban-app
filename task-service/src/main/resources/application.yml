@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/taskdb
+    username: taskuser
+    password: taskpass
+  liquibase:
+    change-log: classpath:/db/changelog/master.yml
+
+server:
+  port: 8081

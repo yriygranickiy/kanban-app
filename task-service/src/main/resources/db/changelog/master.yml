@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changes/create_board.sql
+  - include:
+      file: db/changelog/changes/create_columns.sql
+  - include:
+      file: db/changelog/changes/create_tasks.sql
