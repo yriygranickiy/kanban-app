@@ -12,5 +12,4 @@ public interface BoardRepository extends JpaRepository<Board, UUID> {
 
     List<Board> findAllByOwnerId(UUID ownerId);
 
-
 }

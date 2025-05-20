@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Entity
 @Table(name = "tasks")
 @Builder
