@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -28,6 +29,11 @@ public class BoardController {
     @PostMapping("/create-board")
     public ResponseEntity<BoardResponseDto> addBoard(@RequestBody BoardCreateRequestDto boardDto) {
         return new ResponseEntity<>(boardService.createBoard(boardDto), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/all-boards")
+    public ResponseEntity<List<BoardResponseDto>> getAllBoards() {
+        return ResponseEntity.ok(boardService.getAllBoards());
     }
 
 

@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 @Data
 @Entity
 @Table(name = "columns")
