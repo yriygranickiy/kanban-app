@@ -6,5 +6,4 @@ public record ColumnRequestDto(
         String name,
         UUID boardId,
         Integer position
-) {
-}
+) {}

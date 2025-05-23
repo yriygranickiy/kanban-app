@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ColumnServiceImpl implements ColumnService {
@@ -38,16 +39,19 @@ public class ColumnServiceImpl implements ColumnService {
 
     @Override
     public List<ColumnResponseDto> getAllColumns() {
-        return List.of();
+        return columnRepository.findAll().stream()
+                .map(columnMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public ColumnResponseDto getColumnById(UUID id) {
-        return null;
+        return columnRepository.findById(id).map(columnMapper::toDto).orElseThrow(()->
+                new RuntimeException("Column not found"));
     }
 
     @Override
     public void deleteColumnById(UUID id) {
-
+        columnRepository.deleteById(id);
     }
 }

@@ -12,7 +12,6 @@ import java.util.UUID;
 @Table(name = "boards")
 @AllArgsConstructor
 @NoArgsConstructor
-//@RequiredArgsConstructor
 @Data
 @Builder
 public class Board {

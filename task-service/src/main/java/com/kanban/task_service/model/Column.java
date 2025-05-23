@@ -11,7 +11,6 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Data
 @Entity
 @Table(name = "columns")
@@ -25,7 +24,7 @@ public class Column {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_model_id")
+    @JoinColumn(name = "board_id")
     private Board board;
 
     private Integer position;
