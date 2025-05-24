@@ -3,7 +3,6 @@ package com.kanban.task_service.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.scheduling.config.Task;
 
 import java.time.Instant;
 import java.util.List;
@@ -34,7 +33,7 @@ public class Column {
     private Instant createdAt;
 
 
-    @OneToMany(mappedBy = "column", cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Tasks> tasks;
+    @OneToMany(mappedBy = "columnId", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Task> tasks;
 
 }
