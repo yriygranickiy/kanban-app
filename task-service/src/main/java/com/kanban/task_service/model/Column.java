@@ -10,19 +10,16 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
 @Table(name = "columns")
-@Builder
 public class Column {
-
     @Id
     @GeneratedValue
     private UUID id;
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "board_id")
     private Board board;
 
@@ -33,7 +30,55 @@ public class Column {
     private Instant createdAt;
 
 
-    @OneToMany(mappedBy = "columnId", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "column", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Task> tasks;
 
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
 }

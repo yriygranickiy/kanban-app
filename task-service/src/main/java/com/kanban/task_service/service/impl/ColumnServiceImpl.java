@@ -1,5 +1,6 @@
 package com.kanban.task_service.service.impl;
 
+import com.kanban.task_service.dto.ColumnPatchDto;
 import com.kanban.task_service.dto.ColumnRequestDto;
 import com.kanban.task_service.dto.ColumnResponseDto;
 import com.kanban.task_service.mapper.ColumnMapper;
@@ -8,6 +9,7 @@ import com.kanban.task_service.model.Column;
 import com.kanban.task_service.repository.BoardRepository;
 import com.kanban.task_service.repository.ColumnRepository;
 import com.kanban.task_service.service.ColumnService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,6 +50,23 @@ public class ColumnServiceImpl implements ColumnService {
     public ColumnResponseDto getColumnById(UUID id) {
         return columnRepository.findById(id).map(columnMapper::toDto).orElseThrow(()->
                 new RuntimeException("Column not found"));
+    }
+
+    @Override
+    public ColumnResponseDto updateColumn(UUID id, ColumnPatchDto dto) {
+        Column column = columnRepository.findById(id).orElseThrow(()->
+                new EntityNotFoundException("Column not found"));
+
+        if (dto.boardId() != null) {
+            Board board = boardRepository.findById(dto.boardId())
+                    .orElseThrow(() -> new EntityNotFoundException("Board not found"));
+            column.setBoard(board);
+        }
+
+        columnMapper.updateColumn(dto,column);
+        columnRepository.save(column);
+
+        return columnMapper.toDto(column);
     }
 
     @Override

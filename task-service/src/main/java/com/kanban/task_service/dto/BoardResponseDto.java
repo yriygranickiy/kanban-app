@@ -8,5 +8,5 @@ public record BoardResponseDto(
         UUID id,
         String name,
         UUID ownerId,
-        Instant createAt
+        Instant createdAt
 ) {}

@@ -1,21 +1,19 @@
 package com.kanban.task_service.mapper;
 
 import com.kanban.task_service.dto.BoardCreateRequestDto;
+import com.kanban.task_service.dto.BoardPatchDto;
 import com.kanban.task_service.dto.BoardResponseDto;
 import com.kanban.task_service.model.Board;
-import org.springframework.stereotype.Component;
+import org.mapstruct.*;
 
-@Component
-public class BoardMapper {
+@Mapper(componentModel = "spring")
+public interface BoardMapper {
 
-    public Board toEntity(BoardCreateRequestDto boardDto) {
-       return Board.builder()
-               .name(boardDto.name())
-               .ownerId(boardDto.ownerId())
-               .build();
-    }
 
-    public BoardResponseDto toDto(Board board) {
-        return new BoardResponseDto(board.getId(), board.getName(), board.getOwnerId(), board.getCreatedAt());
-    }
+    Board toEntity(BoardCreateRequestDto boardCreateRequestDto);
+
+    BoardResponseDto toDto(Board board);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateBoard(BoardPatchDto boardDto, @MappingTarget Board entity);
 }

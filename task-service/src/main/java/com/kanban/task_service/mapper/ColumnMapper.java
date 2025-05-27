@@ -1,28 +1,24 @@
 package com.kanban.task_service.mapper;
 
-import com.kanban.task_service.dto.BoardCreateRequestDto;
+import com.kanban.task_service.dto.ColumnPatchDto;
 import com.kanban.task_service.dto.ColumnRequestDto;
 import com.kanban.task_service.dto.ColumnResponseDto;
 import com.kanban.task_service.model.Board;
 import com.kanban.task_service.model.Column;
-import org.springframework.stereotype.Component;
+import org.mapstruct.*;
 
-@Component
-public class ColumnMapper {
+@Mapper(componentModel = "spring")
+public interface ColumnMapper {
 
-    public Column toEntity(ColumnRequestDto columnDto, Board board) {
-        return Column.builder()
-                .name(columnDto.name())
-                .board(board)
-                .position(columnDto.position())
-                .build();
-    }
+     @Mapping(source = "columnRequestDto.name", target = "name")
+     @Mapping(source = "board", target = "board")
+     Column toEntity(ColumnRequestDto columnRequestDto, Board board);
 
-    public ColumnResponseDto toDto(Column column) {
-        return new ColumnResponseDto(column.getId(),
-                column.getName(),
-                column.getBoard().getId(),
-                column.getPosition(),
-                column.getCreatedAt());
-    }
+
+     @Mapping(source = "board.id", target = "boardId")
+     ColumnResponseDto toDto(Column column);
+
+     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+     void updateColumn(ColumnPatchDto dto, @MappingTarget Column column);
 }
+

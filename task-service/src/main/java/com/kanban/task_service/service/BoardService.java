@@ -2,6 +2,7 @@ package com.kanban.task_service.service;
 
 
 import com.kanban.task_service.dto.BoardCreateRequestDto;
+import com.kanban.task_service.dto.BoardPatchDto;
 import com.kanban.task_service.dto.BoardResponseDto;
 import com.kanban.task_service.model.Board;
 
@@ -14,6 +15,6 @@ public interface BoardService {
     BoardResponseDto getBoardById(UUID id);
     List<BoardResponseDto> getAllBoards();
     List<BoardResponseDto> getBoardsByOwnerId(UUID ownerId);
-    Board updateBoard(BoardCreateRequestDto board);
+    BoardResponseDto updateBoard(UUID boardId, BoardPatchDto boardPatchDto);
     void deleteBoard(UUID id);
 }

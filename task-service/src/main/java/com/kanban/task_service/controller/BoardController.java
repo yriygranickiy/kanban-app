@@ -1,6 +1,7 @@
 package com.kanban.task_service.controller;
 
 import com.kanban.task_service.dto.BoardCreateRequestDto;
+import com.kanban.task_service.dto.BoardPatchDto;
 import com.kanban.task_service.dto.BoardResponseDto;
 import com.kanban.task_service.model.Board;
 import com.kanban.task_service.service.BoardService;
@@ -36,5 +37,10 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getAllBoards());
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<BoardResponseDto> updateBoard(@PathVariable UUID id,
+                                                        @RequestBody BoardPatchDto dto){
+        return ResponseEntity.ok(boardService.updateBoard(id, dto));
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.kanban.task_service.service.impl;
 
 import com.kanban.task_service.dto.BoardCreateRequestDto;
+import com.kanban.task_service.dto.BoardPatchDto;
 import com.kanban.task_service.dto.BoardResponseDto;
 import com.kanban.task_service.mapper.BoardMapper;
 import com.kanban.task_service.model.Board;
@@ -39,9 +40,15 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<BoardResponseDto> getAllBoards() {
-        return boardRepository.findAll().stream()
+        List<Board> boards = boardRepository.findAll();
+        boards.forEach(System.out::println);
+
+        return boards.stream()
                 .map(boardMapper::toDto)
                 .collect(Collectors.toList());
+//        return boardRepository.findAll().stream()
+//                .map(boardMapper::toDto)
+//                .collect(Collectors.toList());
     }
 
     @Override
@@ -52,9 +59,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Board updateBoard(BoardCreateRequestDto boardDto) {
-        return null;
+    public BoardResponseDto updateBoard(UUID boardId, BoardPatchDto boardPatchDto) {
+        Board board = boardRepository.findById(boardId).orElseThrow(()->
+                new RuntimeException("Board not found"));
+        boardMapper.updateBoard(boardPatchDto, board);
+        boardRepository.save(board);
+        return boardMapper.toDto(board);
     }
+
 
     @Override
     public void deleteBoard(UUID id) {

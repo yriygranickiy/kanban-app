@@ -1,12 +1,15 @@
 package com.kanban.task_service.service.impl;
 
+import com.kanban.task_service.dto.TaskPathDto;
 import com.kanban.task_service.dto.TaskRequestDto;
 import com.kanban.task_service.dto.TaskResponseDto;
 import com.kanban.task_service.mapper.TaskMapper;
 import com.kanban.task_service.model.Column;
+import com.kanban.task_service.model.Task;
 import com.kanban.task_service.repository.ColumnRepository;
 import com.kanban.task_service.repository.TaskRepository;
 import com.kanban.task_service.service.TaskService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,7 +46,24 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponseDto getTaskById(UUID id) {
         return taskRepository.findById(id).map(taskMapper::toDto).orElseThrow(()->
-                new RuntimeException("Task not found"));
+                new EntityNotFoundException("Task not found"));
+    }
+
+    @Override
+    public TaskResponseDto updateTask(UUID id, TaskPathDto dto) {
+        Task task = taskRepository.findById(id).orElseThrow(()->
+                new EntityNotFoundException("Task not found"));
+
+        if (dto.columnId() != null) {
+            Column column = columnRepository.findById(dto.columnId()).orElseThrow(
+                    () -> new EntityNotFoundException("Column not found")
+            );
+            task.setColumn(column);
+        }
+
+        taskMapper.updateTask(dto,task);
+
+        return taskMapper.toDto(taskRepository.save(task));
     }
 
     @Override
