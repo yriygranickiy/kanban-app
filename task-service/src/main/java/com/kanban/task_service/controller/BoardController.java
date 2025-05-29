@@ -37,7 +37,7 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getAllBoards());
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/update/{id}")
     public ResponseEntity<BoardResponseDto> updateBoard(@PathVariable UUID id,
                                                         @RequestBody BoardPatchDto dto){
         return ResponseEntity.ok(boardService.updateBoard(id, dto));

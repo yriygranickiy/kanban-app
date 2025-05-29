@@ -41,14 +41,9 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public List<BoardResponseDto> getAllBoards() {
         List<Board> boards = boardRepository.findAll();
-        boards.forEach(System.out::println);
-
         return boards.stream()
                 .map(boardMapper::toDto)
                 .collect(Collectors.toList());
-//        return boardRepository.findAll().stream()
-//                .map(boardMapper::toDto)
-//                .collect(Collectors.toList());
     }
 
     @Override
@@ -63,7 +58,9 @@ public class BoardServiceImpl implements BoardService {
         Board board = boardRepository.findById(boardId).orElseThrow(()->
                 new RuntimeException("Board not found"));
         boardMapper.updateBoard(boardPatchDto, board);
+
         boardRepository.save(board);
+
         return boardMapper.toDto(board);
     }
 

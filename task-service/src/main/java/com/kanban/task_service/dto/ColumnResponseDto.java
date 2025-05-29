@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public record ColumnResponseDto(
         UUID id,
-        String name,
+        String columnName,
         UUID boardId,
         Integer position,
         Instant createdAt

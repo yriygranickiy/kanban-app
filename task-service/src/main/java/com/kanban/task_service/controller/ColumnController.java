@@ -1,5 +1,6 @@
 package com.kanban.task_service.controller;
 
+import com.kanban.task_service.dto.ColumnPatchDto;
 import com.kanban.task_service.dto.ColumnRequestDto;
 import com.kanban.task_service.dto.ColumnResponseDto;
 import com.kanban.task_service.service.ColumnService;
@@ -32,5 +33,11 @@ public class ColumnController {
     @GetMapping("/{id}")
     public ResponseEntity<ColumnResponseDto> getColumnById(@PathVariable("id") UUID id){
         return ResponseEntity.ok(columnService.getColumnById(id));
+    }
+
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<ColumnResponseDto> updateColumn(@PathVariable("id") UUID id,
+                                                          @RequestBody ColumnPatchDto dto){
+        return ResponseEntity.ok(columnService.updateColumn(id,dto));
     }
 }

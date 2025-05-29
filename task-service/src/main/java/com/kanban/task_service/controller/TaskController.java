@@ -1,5 +1,6 @@
 package com.kanban.task_service.controller;
 
+import com.kanban.task_service.dto.TaskPathDto;
 import com.kanban.task_service.dto.TaskRequestDto;
 import com.kanban.task_service.dto.TaskResponseDto;
 import com.kanban.task_service.service.TaskService;
@@ -32,5 +33,11 @@ public class TaskController {
     @GetMapping("/{id}")
     public ResponseEntity<TaskResponseDto> getTaskById(@PathVariable UUID id) {
         return ResponseEntity.ok(taskService.getTaskById(id));
+    }
+
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<TaskResponseDto> updateTask(@PathVariable UUID id,
+                                                      @RequestBody TaskPathDto dto) {
+        return ResponseEntity.ok(taskService.updateTask(id, dto));
     }
 }

@@ -64,9 +64,8 @@ public class ColumnServiceImpl implements ColumnService {
         }
 
         columnMapper.updateColumn(dto,column);
-        columnRepository.save(column);
 
-        return columnMapper.toDto(column);
+        return columnMapper.toDto(columnRepository.save(column));
     }
 
     @Override

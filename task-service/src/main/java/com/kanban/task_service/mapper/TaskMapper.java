@@ -12,12 +12,11 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface TaskMapper {
 
-    @Mapping(source = "column", target = "column")
     Task toEntity(TaskRequestDto taskRequestDto, Column column);
 
     @Mapping(source = "column.id",target = "columnId")
     TaskResponseDto toDto(Task task);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateTask(TaskPathDto dto,@MappingTarget Task task);
+    void updateTask(TaskPathDto dto, @MappingTarget Task task);
 }
