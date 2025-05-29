@@ -40,4 +40,9 @@ public class ColumnController {
                                                           @RequestBody ColumnPatchDto dto){
         return ResponseEntity.ok(columnService.updateColumn(id,dto));
     }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteColumnById(@PathVariable("id") UUID id){
+        columnService.deleteColumnById(id);
+    }
 }

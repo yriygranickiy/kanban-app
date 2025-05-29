@@ -16,5 +16,5 @@ public interface BoardService {
     List<BoardResponseDto> getAllBoards();
     List<BoardResponseDto> getBoardsByOwnerId(UUID ownerId);
     BoardResponseDto updateBoard(UUID boardId, BoardPatchDto boardPatchDto);
-    void deleteBoard(UUID id);
+    void deleteBoardById(UUID id);
 }

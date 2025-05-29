@@ -40,4 +40,9 @@ public class TaskController {
                                                       @RequestBody TaskPathDto dto) {
         return ResponseEntity.ok(taskService.updateTask(id, dto));
     }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteTaskById(@PathVariable UUID id) {
+        taskService.deleteTaskById(id);
+    }
 }
