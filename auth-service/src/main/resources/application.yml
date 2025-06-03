@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/authdb
+    username: authuser
+    password: authpass
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  liquibase:
+        change-log: classpath:/db/changelog/auth_master.yml

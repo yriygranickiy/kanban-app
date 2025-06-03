@@ -28,6 +28,9 @@ public class Column {
 
     private Integer position;
 
+    @jakarta.persistence.Column(name = "task_limit")
+    private Integer taskLimit;
+
     @CreationTimestamp
     @jakarta.persistence.Column(name = "created_at")
     private Instant createdAt;

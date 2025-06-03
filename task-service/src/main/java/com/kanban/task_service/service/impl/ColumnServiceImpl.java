@@ -1,8 +1,8 @@
 package com.kanban.task_service.service.impl;
 
-import com.kanban.task_service.dto.ColumnPatchDto;
-import com.kanban.task_service.dto.ColumnRequestDto;
-import com.kanban.task_service.dto.ColumnResponseDto;
+import com.kanban.task_service.dto.Column.ColumnPatchDto;
+import com.kanban.task_service.dto.Column.ColumnRequestDto;
+import com.kanban.task_service.dto.Column.ColumnResponseDto;
 import com.kanban.task_service.mapper.ColumnMapper;
 import com.kanban.task_service.model.Board;
 import com.kanban.task_service.model.Column;
@@ -31,7 +31,7 @@ public class ColumnServiceImpl implements ColumnService {
     }
 
     @Override
-    public ColumnResponseDto createBoard(ColumnRequestDto columnRequestDto) {
+    public ColumnResponseDto createColumn(ColumnRequestDto columnRequestDto) {
         Board board = boardRepository.findById(columnRequestDto.boardId()).orElseThrow(()->
                 new RuntimeException("Board not found"));
         Column column = columnMapper.toEntity(columnRequestDto,board);
@@ -72,4 +72,6 @@ public class ColumnServiceImpl implements ColumnService {
     public void deleteColumnById(UUID id) {
         columnRepository.deleteById(id);
     }
+
+
 }

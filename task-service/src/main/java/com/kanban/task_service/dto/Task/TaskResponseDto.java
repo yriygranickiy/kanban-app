@@ -1,4 +1,4 @@
-package com.kanban.task_service.dto;
+package com.kanban.task_service.dto.Task;
 
 import com.kanban.task_service.model.TaskPriority;
 import com.kanban.task_service.model.TaskStatus;

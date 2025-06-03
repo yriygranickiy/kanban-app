@@ -1,8 +1,8 @@
 package com.kanban.task_service.service.impl;
 
-import com.kanban.task_service.dto.TaskPathDto;
-import com.kanban.task_service.dto.TaskRequestDto;
-import com.kanban.task_service.dto.TaskResponseDto;
+import com.kanban.task_service.dto.Task.TaskPathDto;
+import com.kanban.task_service.dto.Task.TaskRequestDto;
+import com.kanban.task_service.dto.Task.TaskResponseDto;
 import com.kanban.task_service.mapper.TaskMapper;
 import com.kanban.task_service.model.Column;
 import com.kanban.task_service.model.Task;
@@ -33,6 +33,12 @@ public class TaskServiceImpl implements TaskService {
     public TaskResponseDto createTask(TaskRequestDto taskRequestDto) {
         Column column = columnRepository.findById(taskRequestDto.columnId()).orElseThrow(()->
                 new RuntimeException("Column not found"));
+
+        int count = taskRepository.countByColumn(column);
+
+        if (column.getTaskLimit() != null && count >= column.getTaskLimit()) {
+            throw new IllegalStateException("Task limit for this column has been reached.");
+        }
         return taskMapper.toDto(taskRepository.save(taskMapper.toEntity(taskRequestDto, column)));
     }
 
@@ -54,18 +60,19 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository.findById(id).orElseThrow(()->
                 new EntityNotFoundException("Task not found"));
 
-        if (dto.columnId() != null) {
-            Column column = columnRepository.findById(dto.columnId()).orElseThrow(
+        if (dto.columnId() != null && !task.getColumn().getId().equals(dto.columnId())) {
+            Column newColumn = columnRepository.findById(dto.columnId()).orElseThrow(
                     () -> new EntityNotFoundException("Column not found")
             );
-            task.setColumn(column);
+            int count = taskRepository.countByColumn(newColumn);
+            if(newColumn.getTaskLimit() != null && count >= newColumn.getTaskLimit()) {
+                throw new IllegalStateException("Task limit for this column has been reached.");
+            }
+            task.setColumn(newColumn);
         }
-
         taskMapper.updateTask(dto,task);
-
         return taskMapper.toDto(taskRepository.save(task));
     }
-
     @Override
     public void deleteTaskById(UUID id) {
         taskRepository.deleteById(id);

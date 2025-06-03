@@ -1,4 +1,4 @@
-package com.kanban.task_service.dto;
+package com.kanban.task_service.dto.Board;
 
 import java.util.UUID;
 
