@@ -1,0 +1,41 @@
+package com.example.auth_service.controller;
+
+import com.example.auth_service.dto.AssignAuthorityRequest;
+import com.example.auth_service.dto.LoginRequest;
+import com.example.auth_service.dto.RegisterRequest;
+import com.example.auth_service.model.User;
+import com.example.auth_service.service.AuthService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/auth/")
+public class AuthController {
+
+    private final AuthService authService;
+
+    @PostMapping("/register")
+    public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
+        return ResponseEntity.ok(authService.register(request));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+        String token = authService.login(request);
+        return ResponseEntity.ok(token);
+    }
+
+    @PostMapping("/admin/assign-authority")
+    public ResponseEntity<String> assignAuthority( @RequestBody AssignAuthorityRequest request) {
+        authService.assignAuthorityToRole(request);
+        return ResponseEntity.ok("Authority assigned successfully");
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> testAccess() {
+        return ResponseEntity.ok("Access granted with READ_BOARD");
+    }
+
+}
