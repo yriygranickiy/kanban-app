@@ -3,6 +3,7 @@ package com.example.auth_service.service.implementation;
 import com.example.auth_service.dto.AssignAuthorityRequest;
 import com.example.auth_service.dto.LoginRequest;
 import com.example.auth_service.dto.RegisterRequest;
+import com.example.auth_service.exception.InvalidCredentialsException;
 import com.example.auth_service.jwt.JwtUtil;
 import com.example.auth_service.model.Authorities;
 import com.example.auth_service.model.Role;
@@ -62,9 +63,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String login(LoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.email())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+                .orElseThrow(() -> new InvalidCredentialsException("Invalid email or password"));
         if (!passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password");
+            throw new InvalidCredentialsException("Invalid password or username");
         }
         List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
                 .flatMap(r->r.getAuthorities().stream()
