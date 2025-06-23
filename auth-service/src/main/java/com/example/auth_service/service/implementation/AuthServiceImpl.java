@@ -1,10 +1,9 @@
 package com.example.auth_service.service.implementation;
 
-import com.example.auth_service.dto.AssignAuthorityRequest;
-import com.example.auth_service.dto.LoginRequest;
-import com.example.auth_service.dto.RegisterRequest;
+import com.example.auth_service.dto.*;
 import com.example.auth_service.exception.InvalidCredentialsException;
 import com.example.auth_service.jwt.JwtUtil;
+import com.example.auth_service.mapper.UserMapper;
 import com.example.auth_service.model.Authorities;
 import com.example.auth_service.model.Role;
 import com.example.auth_service.model.User;
@@ -34,15 +33,16 @@ public class AuthServiceImpl implements AuthService {
     private final AuthoritiesRepository authoritiesRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
 
     @Override
-    public User register(RegisterRequest registerRequest) {
+    public UserDTO register(RegisterRequest registerRequest) {
         if (userRepository.findByEmail(registerRequest.email()).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");
+            throw new InvalidCredentialsException("Email already exists");
         }
         if (userRepository.findByUsername(registerRequest.username()).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already exists");
+            throw new InvalidCredentialsException("Username already exists");
         }
 
         User user = User.builder()
@@ -56,12 +56,13 @@ public class AuthServiceImpl implements AuthService {
         Set<Role> roles = new HashSet<>();
         roles.add(userRole);
         user.setRoles(roles);
+        userRepository.save(user);
 
-        return userRepository.save(user);
+        return userMapper.toDto(user);
     }
 
     @Override
-    public String login(LoginRequest loginRequest) {
+    public TokenDTO login(LoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.email())
                 .orElseThrow(() -> new InvalidCredentialsException("Invalid email or password"));
         if (!passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
@@ -71,7 +72,12 @@ public class AuthServiceImpl implements AuthService {
                 .flatMap(r->r.getAuthorities().stream()
                         .map(auth -> new SimpleGrantedAuthority(auth.getName())))
                 .toList();
-        return jwtUtil.generateToken(loginRequest.email(), authorities);
+
+
+
+        return TokenDTO.builder()
+                .auth_token(jwtUtil.generateToken(loginRequest.email(),authorities))
+                .build();
     }
 
     @Override

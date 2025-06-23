@@ -1,8 +1,6 @@
 package com.example.auth_service.controller;
 
-import com.example.auth_service.dto.AssignAuthorityRequest;
-import com.example.auth_service.dto.LoginRequest;
-import com.example.auth_service.dto.RegisterRequest;
+import com.example.auth_service.dto.*;
 import com.example.auth_service.model.User;
 import com.example.auth_service.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +15,13 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<UserDTO> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
-        String token = authService.login(request);
+    public ResponseEntity<TokenDTO> login(@RequestBody LoginRequest request) {
+        TokenDTO token = authService.login(request);
         return ResponseEntity.ok(token);
     }
 
