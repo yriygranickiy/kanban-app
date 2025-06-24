@@ -13,6 +13,7 @@
     <modules>
         <module>eureka-server</module>
         <module>task-service</module>
+        <module>auth-service</module>
         <!-- Здесь позже можно добавить gateway, task-service и т.д. -->
     </modules>
 
