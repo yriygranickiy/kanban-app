@@ -72,9 +72,6 @@ public class AuthServiceImpl implements AuthService {
                 .flatMap(r->r.getAuthorities().stream()
                         .map(auth -> new SimpleGrantedAuthority(auth.getName())))
                 .toList();
-
-
-
         return TokenDTO.builder()
                 .auth_token(jwtUtil.generateToken(loginRequest.email(),authorities))
                 .build();

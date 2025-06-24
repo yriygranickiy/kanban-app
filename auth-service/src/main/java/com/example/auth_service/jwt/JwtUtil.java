@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.security.PublicKey;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +29,7 @@ public class JwtUtil {
     @Value("${spring.jwt.expiration-ms}")
     private long expirationMs;
 
-    private Key getSigninKey(){
+    private SecretKey getSigninKey(){
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
@@ -69,9 +71,9 @@ public class JwtUtil {
     public boolean validateToken(String token) {
         try {
             Jwts.parser()
-                    .setSigningKey(getSigninKey())
+                    .verifyWith(getSigninKey())
                     .build()
-                    .parseClaimsJws(token);
+                    .parse(token);
             return true;
         } catch (ExpiredJwtException e) {
             logger.error("JWT token expired: {}", e.getMessage());
