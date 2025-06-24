@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/columns")
+@RequestMapping("/api/todo")
 public class ColumnController {
 
     private final ColumnService columnService;
