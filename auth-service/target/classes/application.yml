@@ -1,0 +1,18 @@
+spring:
+    datasource:
+      url: jdbc:postgresql://localhost:5433/authdb
+      username: authuser
+      password: authpass
+    jpa:
+      hibernate:
+        ddl-auto: none
+      show-sql: true
+    liquibase:
+          change-log: classpath:/db/changelog/auth_master.yml
+    jwt:
+      secret: 8J+7kX9zQw2mP5vL3nRtY6uH4jK8gF0pA2bC1dE9=
+      expiration-ms: 86400000
+
+server:
+  port: 8082
+
