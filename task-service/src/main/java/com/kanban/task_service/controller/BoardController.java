@@ -21,7 +21,7 @@ public class BoardController {
         this.boardService = boardService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/board/{id}")
     public ResponseEntity<BoardResponseDto> getBoard(@PathVariable UUID id) {
         return ResponseEntity.ok(boardService.getBoardById(id));
     }
@@ -36,13 +36,13 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getAllBoards());
     }
 
-    @PatchMapping("/update/{id}")
+    @PatchMapping("/update-board/{id}")
     public ResponseEntity<BoardResponseDto> updateBoard(@PathVariable UUID id,
                                                         @RequestBody BoardPatchDto dto){
         return ResponseEntity.ok(boardService.updateBoard(id, dto));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete-board/{id}")
     public void deleteBoard(@PathVariable UUID id) {
         boardService.deleteBoardById(id);
     }

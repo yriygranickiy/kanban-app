@@ -30,18 +30,18 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getAllTasks());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/task/{id}")
     public ResponseEntity<TaskResponseDto> getTaskById(@PathVariable UUID id) {
         return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
-    @PatchMapping("/update/{id}")
+    @PatchMapping("/update-task/{id}")
     public ResponseEntity<TaskResponseDto> updateTask(@PathVariable UUID id,
                                                       @RequestBody TaskPathDto dto) {
         return ResponseEntity.ok(taskService.updateTask(id, dto));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete-task/{id}")
     public void deleteTaskById(@PathVariable UUID id) {
         taskService.deleteTaskById(id);
     }

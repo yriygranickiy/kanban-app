@@ -30,18 +30,18 @@ public class ColumnController {
         return ResponseEntity.ok(columnService.getAllColumns());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/column/{id}")
     public ResponseEntity<ColumnResponseDto> getColumnById(@PathVariable("id") UUID id){
         return ResponseEntity.ok(columnService.getColumnById(id));
     }
 
-    @PatchMapping("/update/{id}")
+    @PatchMapping("/update-column/{id}")
     public ResponseEntity<ColumnResponseDto> updateColumn(@PathVariable("id") UUID id,
                                                           @RequestBody ColumnPatchDto dto){
         return ResponseEntity.ok(columnService.updateColumn(id,dto));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete-column/{id}")
     public void deleteColumnById(@PathVariable("id") UUID id){
         columnService.deleteColumnById(id);
     }
