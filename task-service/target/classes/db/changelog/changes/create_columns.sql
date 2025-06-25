@@ -1,0 +1,7 @@
+CREATE TABLE columns (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(255) NOT NULL,
+    board_id UUID NOT NULL REFERENCES boards(id) ON DELETE CASCADE,
+    position INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
