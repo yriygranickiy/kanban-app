@@ -1,9 +1,8 @@
 package com.kanban.task_service.controller;
 
-import com.kanban.task_service.dto.BoardCreateRequestDto;
-import com.kanban.task_service.dto.BoardPatchDto;
-import com.kanban.task_service.dto.BoardResponseDto;
-import com.kanban.task_service.model.Board;
+import com.kanban.task_service.dto.Board.BoardCreateRequestDto;
+import com.kanban.task_service.dto.Board.BoardPatchDto;
+import com.kanban.task_service.dto.Board.BoardResponseDto;
 import com.kanban.task_service.service.BoardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/boards")
+@RequestMapping("/api/todo")
 public class BoardController {
 
     private final BoardService boardService;

@@ -1,7 +1,6 @@
-package com.kanban.task_service.dto;
+package com.kanban.task_service.dto.Board;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record BoardResponseDto(

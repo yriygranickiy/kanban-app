@@ -1,8 +1,8 @@
 package com.kanban.task_service.controller;
 
-import com.kanban.task_service.dto.TaskPathDto;
-import com.kanban.task_service.dto.TaskRequestDto;
-import com.kanban.task_service.dto.TaskResponseDto;
+import com.kanban.task_service.dto.Task.TaskPathDto;
+import com.kanban.task_service.dto.Task.TaskRequestDto;
+import com.kanban.task_service.dto.Task.TaskResponseDto;
 import com.kanban.task_service.service.TaskService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/task")
+@RequestMapping("/api/todo")
 public class TaskController {
 
     private final TaskService taskService;

@@ -1,8 +1,8 @@
 package com.kanban.task_service.mapper;
 
-import com.kanban.task_service.dto.TaskPathDto;
-import com.kanban.task_service.dto.TaskRequestDto;
-import com.kanban.task_service.dto.TaskResponseDto;
+import com.kanban.task_service.dto.Task.TaskPathDto;
+import com.kanban.task_service.dto.Task.TaskRequestDto;
+import com.kanban.task_service.dto.Task.TaskResponseDto;
 import com.kanban.task_service.model.Column;
 import com.kanban.task_service.model.Task;
 import org.mapstruct.*;

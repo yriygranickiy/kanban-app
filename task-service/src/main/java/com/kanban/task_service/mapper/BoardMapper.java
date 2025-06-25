@@ -1,8 +1,8 @@
 package com.kanban.task_service.mapper;
 
-import com.kanban.task_service.dto.BoardCreateRequestDto;
-import com.kanban.task_service.dto.BoardPatchDto;
-import com.kanban.task_service.dto.BoardResponseDto;
+import com.kanban.task_service.dto.Board.BoardCreateRequestDto;
+import com.kanban.task_service.dto.Board.BoardPatchDto;
+import com.kanban.task_service.dto.Board.BoardResponseDto;
 import com.kanban.task_service.model.Board;
 import org.mapstruct.*;
 
