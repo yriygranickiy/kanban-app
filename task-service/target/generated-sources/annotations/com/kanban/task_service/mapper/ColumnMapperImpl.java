@@ -1,8 +1,8 @@
 package com.kanban.task_service.mapper;
 
-import com.kanban.task_service.dto.ColumnPatchDto;
-import com.kanban.task_service.dto.ColumnRequestDto;
-import com.kanban.task_service.dto.ColumnResponseDto;
+import com.kanban.task_service.dto.Column.ColumnPatchDto;
+import com.kanban.task_service.dto.Column.ColumnRequestDto;
+import com.kanban.task_service.dto.Column.ColumnResponseDto;
 import com.kanban.task_service.model.Board;
 import com.kanban.task_service.model.Column;
 import java.time.Instant;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-24T15:57:55+0300",
+    date = "2025-06-26T14:24:22+0300",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.1 (Oracle Corporation)"
 )
 @Component
@@ -28,6 +28,7 @@ public class ColumnMapperImpl implements ColumnMapper {
 
         if ( columnRequestDto != null ) {
             column.position( columnRequestDto.position() );
+            column.taskLimit( columnRequestDto.taskLimit() );
         }
         if ( board != null ) {
             column.id( board.getId() );
@@ -46,16 +47,18 @@ public class ColumnMapperImpl implements ColumnMapper {
         UUID boardId = null;
         UUID id = null;
         String columnName = null;
+        Integer taskLimit = null;
         Integer position = null;
         Instant createdAt = null;
 
         boardId = columnBoardId( column );
         id = column.getId();
         columnName = column.getColumnName();
+        taskLimit = column.getTaskLimit();
         position = column.getPosition();
         createdAt = column.getCreatedAt();
 
-        ColumnResponseDto columnResponseDto = new ColumnResponseDto( id, columnName, boardId, position, createdAt );
+        ColumnResponseDto columnResponseDto = new ColumnResponseDto( id, columnName, boardId, taskLimit, position, createdAt );
 
         return columnResponseDto;
     }
@@ -71,6 +74,9 @@ public class ColumnMapperImpl implements ColumnMapper {
         }
         if ( dto.position() != null ) {
             column.setPosition( dto.position() );
+        }
+        if ( dto.taskLimit() != null ) {
+            column.setTaskLimit( dto.taskLimit() );
         }
     }
 

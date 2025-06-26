@@ -1,8 +1,8 @@
 package com.kanban.task_service.mapper;
 
-import com.kanban.task_service.dto.TaskPathDto;
-import com.kanban.task_service.dto.TaskRequestDto;
-import com.kanban.task_service.dto.TaskResponseDto;
+import com.kanban.task_service.dto.Task.TaskPathDto;
+import com.kanban.task_service.dto.Task.TaskRequestDto;
+import com.kanban.task_service.dto.Task.TaskResponseDto;
 import com.kanban.task_service.model.Column;
 import com.kanban.task_service.model.Task;
 import com.kanban.task_service.model.TaskPriority;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-24T15:57:55+0300",
+    date = "2025-06-26T14:24:22+0300",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.1 (Oracle Corporation)"
 )
 @Component
