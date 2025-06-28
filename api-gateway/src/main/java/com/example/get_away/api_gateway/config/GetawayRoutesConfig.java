@@ -13,7 +13,6 @@ public class GetawayRoutesConfig {
         return builder.routes()
                 .route("auth-service",r->r.path("/api/auth/**")
                         .uri("http://localhost:8082"))
-
                 .build();
     }
 }
