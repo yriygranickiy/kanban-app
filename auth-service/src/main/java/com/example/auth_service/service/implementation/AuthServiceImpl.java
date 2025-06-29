@@ -13,15 +13,13 @@ import com.example.auth_service.repository.UserRepository;
 import com.example.auth_service.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,13 +75,12 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
-    @Override
-    public void assignAuthorityToRole(AssignAuthorityRequest request) {
-        Role role = roleRepository.findByName(request.roleName())
-                .orElseThrow(() -> new RuntimeException("Role not found: " + request.roleName()));
-        Authorities auth = authoritiesRepository.findByName(request.authority())
-                .orElseThrow(() -> new RuntimeException("Authority not found: " + request.authority()));
-        role.getAuthorities().add(auth);
-        roleRepository.save(role);
+    public List<String> getPermissionsByUserId(UUID id) {
+        return userRepository.findById(id)
+                .map(user -> user.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .distinct()
+                        .toList())
+                .orElse(List.of()); // если пользователя нет — пустой список
     }
 }

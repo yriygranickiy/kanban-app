@@ -25,12 +25,6 @@ public class AuthController {
         return ResponseEntity.ok(token);
     }
 
-    @PostMapping("/admin/assign-authority")
-    public ResponseEntity<String> assignAuthority( @RequestBody AssignAuthorityRequest request) {
-        authService.assignAuthorityToRole(request);
-        return ResponseEntity.ok("Authority assigned successfully");
-    }
-
     @GetMapping("/test")
     public ResponseEntity<String> testAccess() {
         return ResponseEntity.ok("Access granted with READ_BOARD");

@@ -32,4 +32,6 @@ public class CustomUserDetailsService  implements UserDetailsService {
                         .map(authorities -> new SimpleGrantedAuthority(authorities.getName()))
                         .toString())).toList());
     }
+
+
 }

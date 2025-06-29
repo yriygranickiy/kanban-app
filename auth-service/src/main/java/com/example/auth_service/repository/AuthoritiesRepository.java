@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface AuthoritiesRepository extends JpaRepository<Authorities, UUID> {
     Optional<Authorities> findByName(String name);
+    Optional<Authorities> findById(UUID id);
 }
