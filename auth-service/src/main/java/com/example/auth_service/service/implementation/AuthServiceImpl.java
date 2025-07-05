@@ -75,8 +75,8 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
-    public List<String> getPermissionsByUserId(UUID id) {
-        return userRepository.findById(id)
+    public List<String> getPermissionsByUserEmail(String email) {
+        return userRepository.findByEmail(email)
                 .map(user -> user.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .distinct()

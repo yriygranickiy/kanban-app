@@ -12,5 +12,5 @@ public interface AuthService {
 
     TokenDTO login(LoginRequest loginRequest);
 
-    List<String> getPermissionsByUserId(UUID id);
+    List<String> getPermissionsByUserEmail(String email);
 }

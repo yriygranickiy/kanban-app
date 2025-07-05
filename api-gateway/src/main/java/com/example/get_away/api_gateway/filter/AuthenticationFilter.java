@@ -19,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthenticationFilter implements GatewayFilter {
 
-    private final WebClient webClient;
     private final WebClient authServiceWebClient;
 
 
@@ -33,6 +32,7 @@ public class AuthenticationFilter implements GatewayFilter {
             return exchange.getResponse().setComplete();
         }
 
+        //TODO: нужно подумать как передавать id юзера в запрос для получения его permissions
         // call to /permissions on auth-service
         return authServiceWebClient.get()
                 .uri("/api/permission")
