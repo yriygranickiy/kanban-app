@@ -21,11 +21,13 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    @PreAuthorize("hasAuthority('CREATE_TASK')")
     @PostMapping("/create-task")
     public ResponseEntity<TaskResponseDto> createTask(@RequestBody TaskRequestDto taskRequestDto) {
         return ResponseEntity.ok(taskService.createTask(taskRequestDto));
     }
 
+    @PreAuthorize("hasAuthority('READ_TASK')")
     @GetMapping("/all-tasks")
     public ResponseEntity<List<TaskResponseDto>> getAllTask() {
         return ResponseEntity.ok(taskService.getAllTasks());

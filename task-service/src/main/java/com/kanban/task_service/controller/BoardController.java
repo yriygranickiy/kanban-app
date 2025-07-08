@@ -7,6 +7,7 @@ import com.kanban.task_service.service.BoardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,9 +28,15 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getBoardById(id));
     }
 
+
+    @GetMapping("/board/debug")
+    public String getBoardDebug(Authentication authentication) {
+        return "Auth:"+ authentication.getAuthorities().toString();
+    }
+
     @PreAuthorize("hasAuthority('CREATE_BOARD')")
     @PostMapping("/create-board")
-    public ResponseEntity<BoardResponseDto> addBoard(@RequestBody BoardCreateRequestDto boardDto) {
+    public ResponseEntity<BoardResponseDto> addBoard(@RequestBody BoardCreateRequestDto boardDto, Authentication authentication) {
         return new ResponseEntity<>(boardService.createBoard(boardDto), HttpStatus.CREATED);
     }
     @PreAuthorize("hasAuthority('READ_BOARD')")

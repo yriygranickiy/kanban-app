@@ -5,6 +5,7 @@ import com.example.auth_service.model.User;
 import com.example.auth_service.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,6 +26,7 @@ public class AuthController {
         return ResponseEntity.ok(token);
     }
 
+    @PreAuthorize("hasAuthority('UPDATE_BOARD')")
     @GetMapping("/test")
     public ResponseEntity<String> testAccess() {
         return ResponseEntity.ok("Access granted with READ_BOARD");

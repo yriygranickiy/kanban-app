@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,6 +25,7 @@ public class PermissionsHeaderFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+
         String permissionsHeader = request.getHeader("X-User-Permissions");
 
         if (permissionsHeader != null) {
@@ -33,7 +35,12 @@ public class PermissionsHeaderFilter extends OncePerRequestFilter {
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(null, null, authorities);
+            Authentication authentication =
+                    new UsernamePasswordAuthenticationToken("user", null, authorities);
+
+            System.out.println("Установлены права: " + authorities);
+
+            SecurityContextHolder.clearContext(); // очистим контекст
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 

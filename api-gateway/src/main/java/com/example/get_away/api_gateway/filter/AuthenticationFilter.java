@@ -12,7 +12,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.security.Permission;
 import java.util.List;
 
 @Component
@@ -27,6 +26,7 @@ public class AuthenticationFilter implements GatewayFilter {
         ServerHttpRequest request = exchange.getRequest();
         String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
+
         if  (authHeader == null || !authHeader.startsWith("Bearer ")) {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
@@ -38,12 +38,18 @@ public class AuthenticationFilter implements GatewayFilter {
                 .uri("/api/permission")
                 .header(HttpHeaders.AUTHORIZATION, authHeader)
                 .retrieve()
+                .onStatus(status-> status.isError(),clientResponse -> {
+                                    return clientResponse.createException().flatMap(Mono::error);
+                })
                 .bodyToMono(new ParameterizedTypeReference<List<String>>() {})
-                .flatMap(permissions -> {
-                    ServerHttpRequest mutedRequest = request.mutate()
+                 .flatMap(permissions -> {
+                            ServerHttpRequest mutedRequest = request.mutate()
                             .header("X-User-Permissions", String.join(",", permissions))
                             .build();
-                    return chain.filter(exchange.mutate().request(mutedRequest).build());
+                    return chain.filter(exchange.mutate().request(mutedRequest).build())
+                            .doOnSuccess(v -> System.out.println("chain.filter() успешно завершился"))
+                            .doOnError(e -> System.out.println("chain.filter() завершился ошибкой: " + e.getMessage()));
+
                 })
                 .onErrorResume(ex ->{
                     exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
