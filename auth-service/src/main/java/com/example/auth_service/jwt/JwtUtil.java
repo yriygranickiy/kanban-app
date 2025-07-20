@@ -1,6 +1,8 @@
 package com.example.auth_service.jwt;
 
 import com.example.auth_service.dto.JwtClaims;
+import com.example.auth_service.utill.EnvLoader;
+import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
@@ -23,11 +25,9 @@ public class JwtUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
-    @Value("${spring.jwt.secret}")
-    private String secret;
+    private String secret = EnvLoader.getSecret("JWT_SECRET");
 
-    @Value("${spring.jwt.expiration-ms}")
-    private long expirationMs;
+    private long expirationMs = EnvLoader.getExpirationMs("EXP_TIME");
 
     private SecretKey getSigninKey(){
         return Keys.hmacShaKeyFor(secret.getBytes());

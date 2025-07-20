@@ -17,7 +17,7 @@ spring:
       admin:
         client-id: auth-service-admin
     jwt:
-      secret: 8J+7kX9zQw2mP5vL3nRtY6uH4jK8gF0pA2bC1dE9=
+      secret: 8J+7kX9zQw2mP5vL3nRtY6uH4jK8gF0pA2bC1dE9
       expiration-ms: 86400000
 
 server:

@@ -28,7 +28,6 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getBoardById(id));
     }
 
-
     @GetMapping("/board/debug")
     public String getBoardDebug(Authentication authentication) {
         return "Auth:"+ authentication.getAuthorities().toString();
@@ -36,7 +35,7 @@ public class BoardController {
 
     @PreAuthorize("hasAuthority('CREATE_BOARD')")
     @PostMapping("/create-board")
-    public ResponseEntity<BoardResponseDto> addBoard(@RequestBody BoardCreateRequestDto boardDto, Authentication authentication) {
+    public ResponseEntity<BoardResponseDto> addBoard(@RequestBody BoardCreateRequestDto boardDto) {
         return new ResponseEntity<>(boardService.createBoard(boardDto), HttpStatus.CREATED);
     }
     @PreAuthorize("hasAuthority('READ_BOARD')")
