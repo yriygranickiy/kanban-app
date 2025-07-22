@@ -18,7 +18,6 @@ public class SecurityConfig {
 
     private final PermissionsHeaderFilter permissionsHeaderFilter;
 
-    //TODO:нужно сделать правильный доступ к эндпоинтам
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http

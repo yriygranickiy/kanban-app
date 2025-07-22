@@ -6,6 +6,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -19,7 +20,6 @@ import java.util.List;
 public class AuthenticationFilter implements GatewayFilter {
 
     private final WebClient authServiceWebClient;
-
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -38,7 +38,7 @@ public class AuthenticationFilter implements GatewayFilter {
                 .uri("/api/permission")
                 .header(HttpHeaders.AUTHORIZATION, authHeader)
                 .retrieve()
-                .onStatus(status-> status.isError(),clientResponse -> {
+                .onStatus(HttpStatusCode::isError, clientResponse -> {
                                     return clientResponse.createException().flatMap(Mono::error);
                 })
                 .bodyToMono(new ParameterizedTypeReference<List<String>>() {})
