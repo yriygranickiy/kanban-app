@@ -5,6 +5,8 @@ spring:
     password: taskpass
   liquibase:
     change-log: classpath:/db/changelog/master.yml
+  kafka:
+    bootstrap-servers: localhost:9092
 
 server:
   port: 8081
