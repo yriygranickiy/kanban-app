@@ -3,11 +3,13 @@ package com.kanban.task_service.service.impl;
 import com.kanban.task_service.dto.Task.TaskPathDto;
 import com.kanban.task_service.dto.Task.TaskRequestDto;
 import com.kanban.task_service.dto.Task.TaskResponseDto;
+import com.kanban.task_service.dto.BoardEventDto;
 import com.kanban.task_service.mapper.TaskMapper;
 import com.kanban.task_service.model.Column;
 import com.kanban.task_service.model.Task;
 import com.kanban.task_service.repository.ColumnRepository;
 import com.kanban.task_service.repository.TaskRepository;
+import com.kanban.task_service.service.BoardEventProducer;
 import com.kanban.task_service.service.TaskService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,7 @@ public class TaskServiceImpl implements TaskService {
     private final ColumnRepository columnRepository;
     private final TaskMapper taskMapper;
 
-    public TaskServiceImpl(TaskRepository taskRepository,ColumnRepository columnRepository, TaskMapper taskMapper) {
+    public TaskServiceImpl(TaskRepository taskRepository, ColumnRepository columnRepository, TaskMapper taskMapper) {
         this.taskRepository = taskRepository;
         this.columnRepository = columnRepository;
         this.taskMapper = taskMapper;
@@ -39,7 +41,12 @@ public class TaskServiceImpl implements TaskService {
         if (column.getTaskLimit() != null && count >= column.getTaskLimit()) {
             throw new IllegalStateException("Task limit for this column has been reached.");
         }
-        return taskMapper.toDto(taskRepository.save(taskMapper.toEntity(taskRequestDto, column)));
+
+        Task task = taskMapper.toEntity(taskRequestDto, column);
+
+        taskRepository.save(task);
+
+        return taskMapper.toDto(task);
     }
 
     @Override

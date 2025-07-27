@@ -1,9 +1,5 @@
--- liquibase formatted sql
 
--- changeset author:granitskiy
-
--- changeSetId:02-create-roles-table
-CREATE TABLE roles (
+CREATE TABLE IF NOT EXISTS roles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(50)  NOT NULL
 );
