@@ -18,6 +18,7 @@ import java.security.PublicKey;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -33,13 +34,14 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(String email, List<? extends GrantedAuthority> authorities) {
+    public String generateToken(UUID user_id, String email, List<? extends GrantedAuthority> authorities) {
         List<String> nameAuthorities = authorities.stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();
 
         return Jwts.builder()
                 .subject(email)
+                .claim("user_id", user_id)
                 .claim("authorities", nameAuthorities)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expirationMs))
@@ -60,7 +62,10 @@ public class JwtUtil {
                     .map(Objects::toString)
                     .collect(Collectors.toList());
 
-            return new JwtClaims(claims.getSubject(), authorities);
+            String id = claims.get("user_id", String.class);
+            UUID user_id = UUID.fromString(id);
+
+            return new JwtClaims(claims.getSubject(), authorities, user_id);
 
         } catch (JwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());

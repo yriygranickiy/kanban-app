@@ -3,12 +3,11 @@ package com.kanban.task_service.service.impl;
 import com.kanban.task_service.dto.Board.BoardCreateRequestDto;
 import com.kanban.task_service.dto.Board.BoardPatchDto;
 import com.kanban.task_service.dto.Board.BoardResponseDto;
-import com.kanban.task_service.dto.BoardEventDto;
 import com.kanban.task_service.mapper.BoardMapper;
 import com.kanban.task_service.model.Board;
 import com.kanban.task_service.repository.BoardRepository;
-import com.kanban.task_service.service.BoardEventProducer;
 import com.kanban.task_service.service.BoardService;
+import com.kanban.task_service.util.SecurityUtilForUser;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,23 +18,19 @@ import java.util.stream.Collectors;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
-    private final BoardEventProducer producer;
     private final BoardMapper boardMapper;
 
-    public BoardServiceImpl(BoardRepository boardRepository, BoardEventProducer producer, BoardMapper boardMapper) {
+    public BoardServiceImpl(BoardRepository boardRepository, BoardMapper boardMapper) {
         this.boardRepository = boardRepository;
-        this.producer = producer;
         this.boardMapper = boardMapper;
     }
 
     @Override
     public BoardResponseDto createBoard(BoardCreateRequestDto boardDto) {
          Board board = boardMapper.toEntity(boardDto);
+//         board.setOwnerId(UUID.randomUUID());
+         board.setOwnerId(SecurityUtilForUser.getUserId());
          boardRepository.save(board);
-
-        BoardEventDto eventDto = new BoardEventDto(board.getId().toString(),board.getName());
-        producer.sendBoardcreatedEvent(eventDto);
-
          return boardMapper.toDto(board);
     }
 

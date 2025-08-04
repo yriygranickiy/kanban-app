@@ -13,4 +13,6 @@ public interface AuthService {
     TokenDTO login(LoginRequest loginRequest);
 
     List<String> getPermissionsByUserEmail(String email);
+
+
 }

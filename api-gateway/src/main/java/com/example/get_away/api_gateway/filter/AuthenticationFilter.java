@@ -1,5 +1,6 @@
 package com.example.get_away.api_gateway.filter;
 
+import com.example.get_away.api_gateway.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -12,8 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -32,20 +31,22 @@ public class AuthenticationFilter implements GatewayFilter {
             return exchange.getResponse().setComplete();
         }
 
-        //TODO: нужно подумать как передавать id юзера в запрос для получения его permissions
-        // call to /permissions on auth-service
+
         return authServiceWebClient.get()
-                .uri("/api/permission")
+                .uri("/api/permission_and_id")
                 .header(HttpHeaders.AUTHORIZATION, authHeader)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, clientResponse -> {
                                     return clientResponse.createException().flatMap(Mono::error);
                 })
-                .bodyToMono(new ParameterizedTypeReference<List<String>>() {})
-                 .flatMap(permissions -> {
+                .bodyToMono(new ParameterizedTypeReference<UserInfo>() {})
+                 .flatMap(userInfo -> {
+                     System.out.println("Ответ от auth-service " + userInfo.toString());
                             ServerHttpRequest mutedRequest = request.mutate()
-                            .header("X-User-Permissions", String.join(",", permissions))
+                            .header("X-User-Id", userInfo.user_id().toString())
+                            .header("X-User-Permissions", String.join(",", userInfo.permission()))
                             .build();
+                            System.out.println("UserId: " + userInfo.user_id() + " Permissions: " + userInfo.permission());
                     return chain.filter(exchange.mutate().request(mutedRequest).build())
                             .doOnSuccess(v -> System.out.println("chain.filter() успешно завершился"))
                             .doOnError(e -> System.out.println("chain.filter() завершился ошибкой: " + e.getMessage()));

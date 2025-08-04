@@ -4,5 +4,4 @@ server:
 spring:
   application:
     name: api-gateway
-  kafka:
-    bootstrap-servers: localhost:9092
+

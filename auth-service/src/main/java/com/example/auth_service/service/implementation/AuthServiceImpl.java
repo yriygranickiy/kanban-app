@@ -28,7 +28,6 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final AuthoritiesRepository authoritiesRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
@@ -70,17 +69,19 @@ public class AuthServiceImpl implements AuthService {
                 .flatMap(r->r.getAuthorities().stream()
                         .map(auth -> new SimpleGrantedAuthority(auth.getName())))
                 .toList();
+
         return TokenDTO.builder()
-                .auth_token(jwtUtil.generateToken(loginRequest.email(),authorities))
+                .auth_token(jwtUtil.generateToken(user.getId(),loginRequest.email(),authorities))
                 .build();
     }
 
+    @Override
     public List<String> getPermissionsByUserEmail(String email) {
         return userRepository.findByEmail(email)
                 .map(user -> user.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .distinct()
                         .toList())
-                .orElse(List.of()); // если пользователя нет — пустой список
+                .orElse(List.of());
     }
 }

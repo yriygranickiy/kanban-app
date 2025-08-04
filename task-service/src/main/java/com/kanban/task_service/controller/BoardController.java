@@ -36,6 +36,7 @@ public class BoardController {
     @PreAuthorize("hasAuthority('CREATE_BOARD')")
     @PostMapping("/create-board")
     public ResponseEntity<BoardResponseDto> addBoard(@RequestBody BoardCreateRequestDto boardDto) {
+        System.out.println("Права и userId корректны, создаём задачу");
         return new ResponseEntity<>(boardService.createBoard(boardDto), HttpStatus.CREATED);
     }
     @PreAuthorize("hasAuthority('READ_BOARD')")
