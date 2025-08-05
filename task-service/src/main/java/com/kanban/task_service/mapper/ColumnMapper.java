@@ -10,8 +10,7 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface ColumnMapper {
 
-     Column toEntity(ColumnRequestDto columnRequestDto, Board board);
-
+     @Mapping(source = "columnName",target = "column_name")
      @Mapping(source = "board.id", target = "boardId")
      ColumnResponseDto toDto(Column column);
 

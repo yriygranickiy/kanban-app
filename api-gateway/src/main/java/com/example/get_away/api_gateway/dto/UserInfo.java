@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public record UserInfo(
         UUID user_id,
+        String email,
         List<String> permission
 ) {
 }

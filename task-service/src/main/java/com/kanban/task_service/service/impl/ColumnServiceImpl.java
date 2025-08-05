@@ -31,11 +31,21 @@ public class ColumnServiceImpl implements ColumnService {
     }
 
     @Override
-    public ColumnResponseDto createColumn(ColumnRequestDto columnRequestDto) {
-        Board board = boardRepository.findById(columnRequestDto.boardId()).orElseThrow(()->
+    public ColumnResponseDto createColumn(ColumnRequestDto request) {
+        Board board = boardRepository.findById(request.boardId()).orElseThrow(()->
                 new RuntimeException("Board not found"));
-        Column column = columnMapper.toEntity(columnRequestDto,board);
+
+        int nextPosition = columnRepository.findMaxPositionByBoard(board.getId())+1;
+
+        Column column = Column.builder()
+                .columnName(request.column_name())
+                .board(board)
+                .position(nextPosition)
+                .taskLimit(request.task_limit())
+                .build();
+
         columnRepository.save(column);
+
         return columnMapper.toDto(column);
     }
 

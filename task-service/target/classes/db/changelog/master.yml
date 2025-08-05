@@ -6,4 +6,6 @@ databaseChangeLog:
   - include:
       file: db/changelog/changes/create_tasks.sql
   - include:
+      file: db/changelog/changes/create_account.sql
+  - include:
       file: db/changelog/changes/add_task_limit_to_column.sql

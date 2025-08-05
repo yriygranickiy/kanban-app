@@ -1,5 +1,6 @@
 package com.kanban.task_service.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,7 +11,6 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
 @Entity
 @Table(name = "tasks")
@@ -37,10 +37,73 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskPriority priority;
 
-    private Instant dueDate;
+    private LocalDate due_date;
 
     @CreationTimestamp
     @jakarta.persistence.Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
+    public UUID getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Column getColumn() {
+        return column;
+    }
+
+    public void setColumn(Column column) {
+        this.column = column;
+    }
+
+    public UUID getAssigneeId() {
+        return assigneeId;
+    }
+
+    public void setAssigneeId(UUID assigneeId) {
+        this.assigneeId = assigneeId;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+
+    public TaskPriority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(TaskPriority priority) {
+        this.priority = priority;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDate getDue_date() {
+        return due_date;
+    }
+
+    public void setDue_date(LocalDate due_date) {
+        this.due_date = due_date;
+    }
 }

@@ -40,7 +40,15 @@ public class TaskServiceImpl implements TaskService {
             throw new IllegalStateException("Task limit for this column has been reached.");
         }
 
-        Task task = taskMapper.toEntity(taskRequestDto, column);
+        Task task = Task.builder()
+                .title(taskRequestDto.title())
+                .description(taskRequestDto.description())
+                .assigneeId(taskRequestDto.assigneeId())
+                .status(taskRequestDto.status())
+                .priority(taskRequestDto.priority())
+                .due_date(taskRequestDto.due_date())
+                .column(column)
+                .build();
 
         taskRepository.save(task);
 
@@ -76,6 +84,7 @@ public class TaskServiceImpl implements TaskService {
             task.setColumn(newColumn);
         }
         taskMapper.updateTask(dto,task);
+
         return taskMapper.toDto(taskRepository.save(task));
     }
     @Override

@@ -12,8 +12,6 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface TaskMapper {
 
-    Task toEntity(TaskRequestDto taskRequestDto, Column column);
-
     @Mapping(source = "column.id",target = "columnId")
     TaskResponseDto toDto(Task task);
 

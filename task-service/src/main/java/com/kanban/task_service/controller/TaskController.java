@@ -33,17 +33,20 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getAllTasks());
     }
 
+    @PreAuthorize("hasAuthority('READ_TASK')")
     @GetMapping("/task/{id}")
     public ResponseEntity<TaskResponseDto> getTaskById(@PathVariable UUID id) {
         return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
+    @PreAuthorize("hasAuthority('UPDATE_TASK')")
     @PatchMapping("/update-task/{id}")
     public ResponseEntity<TaskResponseDto> updateTask(@PathVariable UUID id,
                                                       @RequestBody TaskPathDto dto) {
         return ResponseEntity.ok(taskService.updateTask(id, dto));
     }
 
+    @PreAuthorize("hasAuthority('DELETE_TASK')")
     @DeleteMapping("/delete-task/{id}")
     public void deleteTaskById(@PathVariable UUID id) {
         taskService.deleteTaskById(id);

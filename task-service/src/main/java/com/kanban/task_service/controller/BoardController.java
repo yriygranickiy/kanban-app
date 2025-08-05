@@ -23,6 +23,8 @@ public class BoardController {
         this.boardService = boardService;
     }
 
+
+    @PreAuthorize("hasAuthority('READ_BOARD')")
     @GetMapping("/board/{id}")
     public ResponseEntity<BoardResponseDto> getBoard(@PathVariable UUID id) {
         return ResponseEntity.ok(boardService.getBoardById(id));

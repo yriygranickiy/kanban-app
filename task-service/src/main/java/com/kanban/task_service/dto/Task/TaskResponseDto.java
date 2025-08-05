@@ -4,6 +4,7 @@ import com.kanban.task_service.model.TaskPriority;
 import com.kanban.task_service.model.TaskStatus;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 public record TaskResponseDto(
@@ -14,7 +15,7 @@ public record TaskResponseDto(
         UUID assigneeId,
         TaskStatus status,
         TaskPriority priority,
-        Instant dueDate,
+        LocalDate due_date,
         Instant createdAt
 ) {
 }

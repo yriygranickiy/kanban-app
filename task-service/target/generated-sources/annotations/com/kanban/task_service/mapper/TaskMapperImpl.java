@@ -1,48 +1,24 @@
 package com.kanban.task_service.mapper;
 
 import com.kanban.task_service.dto.Task.TaskPathDto;
-import com.kanban.task_service.dto.Task.TaskRequestDto;
 import com.kanban.task_service.dto.Task.TaskResponseDto;
 import com.kanban.task_service.model.Column;
 import com.kanban.task_service.model.Task;
 import com.kanban.task_service.model.TaskPriority;
 import com.kanban.task_service.model.TaskStatus;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-08-01T10:30:57+0300",
+    date = "2025-08-05T09:36:04+0300",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.1 (Oracle Corporation)"
 )
 @Component
 public class TaskMapperImpl implements TaskMapper {
-
-    @Override
-    public Task toEntity(TaskRequestDto taskRequestDto, Column column) {
-        if ( taskRequestDto == null && column == null ) {
-            return null;
-        }
-
-        Task.TaskBuilder task = Task.builder();
-
-        if ( taskRequestDto != null ) {
-            task.title( taskRequestDto.title() );
-            task.description( taskRequestDto.description() );
-            task.assigneeId( taskRequestDto.assigneeId() );
-            task.status( taskRequestDto.status() );
-            task.priority( taskRequestDto.priority() );
-            task.dueDate( taskRequestDto.dueDate() );
-        }
-        if ( column != null ) {
-            task.id( column.getId() );
-            task.createdAt( column.getCreatedAt() );
-        }
-
-        return task.build();
-    }
 
     @Override
     public TaskResponseDto toDto(Task task) {
@@ -57,7 +33,7 @@ public class TaskMapperImpl implements TaskMapper {
         UUID assigneeId = null;
         TaskStatus status = null;
         TaskPriority priority = null;
-        Instant dueDate = null;
+        LocalDate due_date = null;
         Instant createdAt = null;
 
         columnId = taskColumnId( task );
@@ -67,10 +43,10 @@ public class TaskMapperImpl implements TaskMapper {
         assigneeId = task.getAssigneeId();
         status = task.getStatus();
         priority = task.getPriority();
-        dueDate = task.getDueDate();
+        due_date = task.getDue_date();
         createdAt = task.getCreatedAt();
 
-        TaskResponseDto taskResponseDto = new TaskResponseDto( id, title, description, columnId, assigneeId, status, priority, dueDate, createdAt );
+        TaskResponseDto taskResponseDto = new TaskResponseDto( id, title, description, columnId, assigneeId, status, priority, due_date, createdAt );
 
         return taskResponseDto;
     }
@@ -96,8 +72,8 @@ public class TaskMapperImpl implements TaskMapper {
         if ( dto.priority() != null ) {
             task.setPriority( dto.priority() );
         }
-        if ( dto.dueDate() != null ) {
-            task.setDueDate( dto.dueDate() );
+        if ( dto.due_date() != null ) {
+            task.setDue_date( dto.due_date() );
         }
     }
 

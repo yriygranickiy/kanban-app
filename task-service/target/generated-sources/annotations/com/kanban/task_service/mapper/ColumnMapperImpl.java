@@ -1,7 +1,6 @@
 package com.kanban.task_service.mapper;
 
 import com.kanban.task_service.dto.Column.ColumnPatchDto;
-import com.kanban.task_service.dto.Column.ColumnRequestDto;
 import com.kanban.task_service.dto.Column.ColumnResponseDto;
 import com.kanban.task_service.model.Board;
 import com.kanban.task_service.model.Column;
@@ -12,31 +11,11 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-08-01T10:30:57+0300",
+    date = "2025-08-05T09:22:47+0300",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.1 (Oracle Corporation)"
 )
 @Component
 public class ColumnMapperImpl implements ColumnMapper {
-
-    @Override
-    public Column toEntity(ColumnRequestDto columnRequestDto, Board board) {
-        if ( columnRequestDto == null && board == null ) {
-            return null;
-        }
-
-        Column.ColumnBuilder column = Column.builder();
-
-        if ( columnRequestDto != null ) {
-            column.position( columnRequestDto.position() );
-            column.taskLimit( columnRequestDto.taskLimit() );
-        }
-        if ( board != null ) {
-            column.id( board.getId() );
-            column.createdAt( board.getCreatedAt() );
-        }
-
-        return column.build();
-    }
 
     @Override
     public ColumnResponseDto toDto(Column column) {
@@ -44,21 +23,21 @@ public class ColumnMapperImpl implements ColumnMapper {
             return null;
         }
 
+        String column_name = null;
         UUID boardId = null;
         UUID id = null;
-        String columnName = null;
         Integer taskLimit = null;
         Integer position = null;
-        Instant createdAt = null;
 
+        column_name = column.getColumnName();
         boardId = columnBoardId( column );
         id = column.getId();
-        columnName = column.getColumnName();
         taskLimit = column.getTaskLimit();
         position = column.getPosition();
-        createdAt = column.getCreatedAt();
 
-        ColumnResponseDto columnResponseDto = new ColumnResponseDto( id, columnName, boardId, taskLimit, position, createdAt );
+        Instant createdAt = null;
+
+        ColumnResponseDto columnResponseDto = new ColumnResponseDto( id, column_name, boardId, taskLimit, position, createdAt );
 
         return columnResponseDto;
     }
@@ -69,14 +48,11 @@ public class ColumnMapperImpl implements ColumnMapper {
             return;
         }
 
-        if ( dto.columnName() != null ) {
-            column.setColumnName( dto.columnName() );
+        if ( dto.taskLimit() != null ) {
+            column.setTaskLimit( dto.taskLimit() );
         }
         if ( dto.position() != null ) {
             column.setPosition( dto.position() );
-        }
-        if ( dto.taskLimit() != null ) {
-            column.setTaskLimit( dto.taskLimit() );
         }
     }
 

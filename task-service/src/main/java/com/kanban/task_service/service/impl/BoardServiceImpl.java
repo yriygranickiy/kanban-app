@@ -28,7 +28,6 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardResponseDto createBoard(BoardCreateRequestDto boardDto) {
          Board board = boardMapper.toEntity(boardDto);
-//         board.setOwnerId(UUID.randomUUID());
          board.setOwnerId(SecurityUtilForUser.getUserId());
          boardRepository.save(board);
          return boardMapper.toDto(board);

@@ -1,11 +1,10 @@
-package com.kanban.task_service.config;
+package com.kanban.task_service.config.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,8 +27,10 @@ public class PermissionsHeaderFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
+
         String userIdHeader = request.getHeader("X-User-Id");
         String permissionsHeader = request.getHeader("X-User-Permissions");
+        String userEmail = request.getHeader("X-User-Email");
 
         List<GrantedAuthority> authorities = new ArrayList<>();
 
@@ -46,10 +47,6 @@ public class PermissionsHeaderFilter extends OncePerRequestFilter {
 
             Authentication authentication =
                     new UsernamePasswordAuthenticationToken(user_id, null, authorities);
-            System.out.println("Права и userId корректны, создаём задачу");
-            System.out.println("Установлен пользователь: " + user_id);
-            System.out.println("Установлены права: " + authorities);
-
 
             SecurityContextHolder.clearContext(); // очистим контекст
             SecurityContextHolder.getContext().setAuthentication(authentication);

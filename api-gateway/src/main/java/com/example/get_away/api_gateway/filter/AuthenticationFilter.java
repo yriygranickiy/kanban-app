@@ -31,7 +31,6 @@ public class AuthenticationFilter implements GatewayFilter {
             return exchange.getResponse().setComplete();
         }
 
-
         return authServiceWebClient.get()
                 .uri("/api/permission_and_id")
                 .header(HttpHeaders.AUTHORIZATION, authHeader)
@@ -41,16 +40,12 @@ public class AuthenticationFilter implements GatewayFilter {
                 })
                 .bodyToMono(new ParameterizedTypeReference<UserInfo>() {})
                  .flatMap(userInfo -> {
-                     System.out.println("Ответ от auth-service " + userInfo.toString());
                             ServerHttpRequest mutedRequest = request.mutate()
                             .header("X-User-Id", userInfo.user_id().toString())
+                            .header("X-User-Email", userInfo.email())
                             .header("X-User-Permissions", String.join(",", userInfo.permission()))
                             .build();
-                            System.out.println("UserId: " + userInfo.user_id() + " Permissions: " + userInfo.permission());
-                    return chain.filter(exchange.mutate().request(mutedRequest).build())
-                            .doOnSuccess(v -> System.out.println("chain.filter() успешно завершился"))
-                            .doOnError(e -> System.out.println("chain.filter() завершился ошибкой: " + e.getMessage()));
-
+                            return chain.filter(exchange.mutate().request(mutedRequest).build());
                 })
                 .onErrorResume(ex ->{
                     exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
