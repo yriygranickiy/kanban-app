@@ -11,6 +11,7 @@ public interface TaskService {
     TaskResponseDto createTask(TaskRequestDto taskRequestDto);
     List<TaskResponseDto> getAllTasks();
     TaskResponseDto getTaskById(UUID id);
+    List<TaskResponseDto> getTasksByUserId(UUID user_id);
     TaskResponseDto updateTask(UUID id, TaskPathDto dto);
     void deleteTaskById(UUID id);
 

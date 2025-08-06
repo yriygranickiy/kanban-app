@@ -4,8 +4,10 @@ import com.kanban.task_service.dto.Task.TaskPathDto;
 import com.kanban.task_service.dto.Task.TaskRequestDto;
 import com.kanban.task_service.dto.Task.TaskResponseDto;
 import com.kanban.task_service.service.TaskService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +39,13 @@ public class TaskController {
     @GetMapping("/task/{id}")
     public ResponseEntity<TaskResponseDto> getTaskById(@PathVariable UUID id) {
         return ResponseEntity.ok(taskService.getTaskById(id));
+    }
+
+    @PreAuthorize("hasAnyAuthority('READ_TASK')")
+    @GetMapping("/task/my")
+    public ResponseEntity<List<TaskResponseDto>> getAllTasksByUserId(Authentication authentication) {
+            UUID user_id = (UUID) authentication.getPrincipal();
+            return ResponseEntity.ok(taskService.getTasksByUserId(user_id));
     }
 
     @PreAuthorize("hasAuthority('UPDATE_TASK')")

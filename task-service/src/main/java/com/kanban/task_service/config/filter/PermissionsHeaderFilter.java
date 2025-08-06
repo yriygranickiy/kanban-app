@@ -1,9 +1,11 @@
 package com.kanban.task_service.config.filter;
 
+import com.kanban.task_service.service.AccountsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,7 +22,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class PermissionsHeaderFilter extends OncePerRequestFilter {
+
+    private final AccountsService accountsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -45,10 +50,12 @@ public class PermissionsHeaderFilter extends OncePerRequestFilter {
         if (userIdHeader != null) {
             UUID user_id = UUID.fromString(userIdHeader);
 
+            accountsService.existAccount(user_id,userEmail);
+
             Authentication authentication =
                     new UsernamePasswordAuthenticationToken(user_id, null, authorities);
 
-            SecurityContextHolder.clearContext(); // очистим контекст
+            SecurityContextHolder.clearContext();
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);

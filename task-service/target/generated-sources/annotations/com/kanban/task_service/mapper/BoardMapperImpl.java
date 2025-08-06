@@ -1,6 +1,5 @@
 package com.kanban.task_service.mapper;
 
-import com.kanban.task_service.dto.Board.BoardCreateRequestDto;
 import com.kanban.task_service.dto.Board.BoardPatchDto;
 import com.kanban.task_service.dto.Board.BoardResponseDto;
 import com.kanban.task_service.model.Board;
@@ -11,24 +10,11 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-08-05T09:22:47+0300",
+    date = "2025-08-06T14:50:55+0300",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.1 (Oracle Corporation)"
 )
 @Component
 public class BoardMapperImpl implements BoardMapper {
-
-    @Override
-    public Board toEntity(BoardCreateRequestDto boardCreateRequestDto) {
-        if ( boardCreateRequestDto == null ) {
-            return null;
-        }
-
-        Board.BoardBuilder board = Board.builder();
-
-        board.name( boardCreateRequestDto.name() );
-
-        return board.build();
-    }
 
     @Override
     public BoardResponseDto toDto(Board board) {

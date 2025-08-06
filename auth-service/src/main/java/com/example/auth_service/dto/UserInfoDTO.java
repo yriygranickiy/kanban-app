@@ -5,6 +5,8 @@ import java.util.UUID;
 
 public record UserInfoDTO(
         UUID user_id,
+        String email,
         List<String> permission
+
 ) {
 }

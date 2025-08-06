@@ -84,4 +84,12 @@ public class Column {
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
     }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
 }

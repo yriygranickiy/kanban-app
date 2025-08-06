@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public record ColumnResponseDto(
         UUID id,
-        String column_name,
+        String columnName,
         UUID boardId,
         Integer taskLimit,
         Integer position,

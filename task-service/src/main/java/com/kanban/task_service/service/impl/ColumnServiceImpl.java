@@ -38,7 +38,7 @@ public class ColumnServiceImpl implements ColumnService {
         int nextPosition = columnRepository.findMaxPositionByBoard(board.getId())+1;
 
         Column column = Column.builder()
-                .columnName(request.column_name())
+                .columnName(request.columnName())
                 .board(board)
                 .position(nextPosition)
                 .taskLimit(request.task_limit())
@@ -51,9 +51,9 @@ public class ColumnServiceImpl implements ColumnService {
 
     @Override
     public List<ColumnResponseDto> getAllColumns() {
-        return columnRepository.findAll().stream()
-                .map(columnMapper::toDto)
-                .collect(Collectors.toList());
+            List<Column> list = columnRepository.findAll().stream()
+                    .toList();
+            return list.stream().map(columnMapper::toDto).collect(Collectors.toList());
     }
 
     @Override

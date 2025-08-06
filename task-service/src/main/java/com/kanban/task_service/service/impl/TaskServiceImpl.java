@@ -69,6 +69,15 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<TaskResponseDto> getTasksByUserId(UUID user_id) {
+         List<Task> list =  taskRepository.findByAssigneeId(user_id)
+                .stream()
+                .toList();
+
+         return list.stream().map(taskMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
     public TaskResponseDto updateTask(UUID id, TaskPathDto dto) {
         Task task = taskRepository.findById(id).orElseThrow(()->
                 new EntityNotFoundException("Task not found"));

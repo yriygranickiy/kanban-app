@@ -9,9 +9,6 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface BoardMapper {
 
-
-    Board toEntity(BoardCreateRequestDto boardCreateRequestDto);
-
     BoardResponseDto toDto(Board board);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

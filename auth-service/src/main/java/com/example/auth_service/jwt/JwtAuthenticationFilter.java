@@ -16,6 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 if (jwtUtil.validateToken(token)) {
                     JwtClaims claims = jwtUtil.parseToken(token);
-                    String username = claims.username();
+                    String username = claims.email();
                     List<String> authorities = claims.authorities();
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                             claims.user_id(),null,authorities.stream().map(SimpleGrantedAuthority::new).toList());

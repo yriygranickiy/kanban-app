@@ -31,9 +31,10 @@ public class AuthoritiesController {
         JwtClaims jwtClaims = jwtUtil.parseToken(token);
 
         UUID user_id = jwtClaims.user_id();
-        String email = jwtClaims.username();
+        String email = jwtClaims.email();
 
         List<String> permission = authService.getPermissionsByUserEmail(email);
-        return ResponseEntity.ok(new UserInfoDTO(user_id, permission));
+
+        return ResponseEntity.ok(new UserInfoDTO(user_id, email, permission));
     }
 }

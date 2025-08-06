@@ -3,6 +3,7 @@ package com.kanban.task_service.service;
 import com.kanban.task_service.dto.Column.ColumnPatchDto;
 import com.kanban.task_service.dto.Column.ColumnRequestDto;
 import com.kanban.task_service.dto.Column.ColumnResponseDto;
+import com.kanban.task_service.model.Column;
 
 import java.util.List;
 import java.util.UUID;

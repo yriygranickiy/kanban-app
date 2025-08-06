@@ -64,8 +64,9 @@ public class JwtUtil {
 
             String id = claims.get("user_id", String.class);
             UUID user_id = UUID.fromString(id);
+            String email = claims.getSubject();
 
-            return new JwtClaims(claims.getSubject(), authorities, user_id);
+            return new JwtClaims(user_id,email,authorities);
 
         } catch (JwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());
