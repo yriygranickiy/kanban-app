@@ -1,11 +1,13 @@
 package com.kanban.task_service.service.impl;
 
+import com.kanban.task_service.dto.Task.TaskMoveRequestDto;
 import com.kanban.task_service.dto.Task.TaskPathDto;
 import com.kanban.task_service.dto.Task.TaskRequestDto;
 import com.kanban.task_service.dto.Task.TaskResponseDto;
 import com.kanban.task_service.mapper.TaskMapper;
 import com.kanban.task_service.model.Column;
 import com.kanban.task_service.model.Task;
+import com.kanban.task_service.model.TaskStatus;
 import com.kanban.task_service.repository.ColumnRepository;
 import com.kanban.task_service.repository.TaskRepository;
 import com.kanban.task_service.service.TaskService;
@@ -13,6 +15,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -30,9 +33,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskResponseDto createTask(TaskRequestDto taskRequestDto) {
-        Column column = columnRepository.findById(taskRequestDto.columnId()).orElseThrow(()->
-                new RuntimeException("Column not found"));
+    public TaskResponseDto createTask(TaskRequestDto requestDto, UUID userId) {
+        Column column = getColumnId(requestDto.columnId());
 
         int count = taskRepository.countByColumn(column);
 
@@ -41,12 +43,13 @@ public class TaskServiceImpl implements TaskService {
         }
 
         Task task = Task.builder()
-                .title(taskRequestDto.title())
-                .description(taskRequestDto.description())
-                .assigneeId(taskRequestDto.assigneeId())
-                .status(taskRequestDto.status())
-                .priority(taskRequestDto.priority())
-                .due_date(taskRequestDto.due_date())
+                .title(requestDto.title())
+                .description(requestDto.description())
+                .due_date(requestDto.due_date())
+                .assigneeId(requestDto.assigneeId() != null ? requestDto.assigneeId() : userId)
+                .id_user_creator(userId)
+                .status(requestDto.status())
+                .priority(requestDto.priority())
                 .column(column)
                 .build();
 
@@ -62,10 +65,20 @@ public class TaskServiceImpl implements TaskService {
                 .collect(Collectors.toList());
     }
 
+
     @Override
     public TaskResponseDto getTaskById(UUID id) {
         return taskRepository.findById(id).map(taskMapper::toDto).orElseThrow(()->
                 new EntityNotFoundException("Task not found"));
+    }
+
+    @Override
+    public List<TaskResponseDto> getAllTasksByColumnId(UUID columnId) {
+
+       List<Task> listTask = taskRepository.findByColumnId(columnId);
+       return listTask.stream()
+                .map(taskMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -96,8 +109,51 @@ public class TaskServiceImpl implements TaskService {
 
         return taskMapper.toDto(taskRepository.save(task));
     }
+
+    @Override
+    public TaskResponseDto moveTask(UUID id_task, TaskMoveRequestDto requestDto) {
+        Task task = taskRepository.findById(id_task).orElseThrow(()->
+                new EntityNotFoundException("Task not found"));
+
+        Column oldColumn = task.getColumn();
+
+        Column newColumn = columnRepository.findById(requestDto.id_column()).orElseThrow(()->
+                new EntityNotFoundException("Column not found"));
+
+        if (oldColumn.getId().equals(newColumn.getId())) {
+            return taskMapper.toDto(task);
+        }
+
+        int count = taskRepository.countByColumn(task.getColumn());
+        if (oldColumn.getTaskLimit() != null && count >= oldColumn.getTaskLimit()) {
+            throw new IllegalStateException("Task limit for this column has been reached.");
+        }
+
+        TaskStatus status = updateStatus(newColumn.getColumnName());
+        task.setStatus(status);
+        task.setColumn(newColumn);
+
+        return taskMapper.toDto(taskRepository.save(task));
+    }
+
     @Override
     public void deleteTaskById(UUID id) {
         taskRepository.deleteById(id);
     }
+
+    private Column getColumnId(UUID id) {
+        return columnRepository.findById(id).orElseThrow(()->
+                new EntityNotFoundException("Column not found"));
+    }
+
+    private TaskStatus updateStatus(String name_status) {
+        return switch (name_status.trim().toUpperCase().replace(" ","_")){
+          case "TO_DO" -> TaskStatus.TODO;
+          case "IN_PROGRESS" -> TaskStatus.IN_PROGRESS;
+          case "DONE" -> TaskStatus.DONE;
+            default -> throw new IllegalArgumentException("Unknown status " + name_status);
+        };
+    }
 }
+
+

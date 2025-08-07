@@ -9,3 +9,5 @@ databaseChangeLog:
       file: db/changelog/changes/create_account.sql
   - include:
       file: db/changelog/changes/add_task_limit_to_column.sql
+  - include:
+      file: db/changelog/changes/add_creator_id_user_task.sql

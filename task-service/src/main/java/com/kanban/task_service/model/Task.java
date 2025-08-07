@@ -43,6 +43,8 @@ public class Task {
     @jakarta.persistence.Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
+    private UUID id_user_creator;
+
     public UUID getId() {
         return id;
     }
@@ -105,5 +107,17 @@ public class Task {
 
     public void setDue_date(LocalDate due_date) {
         this.due_date = due_date;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public UUID getId_user_creator() {
+        return id_user_creator;
+    }
+
+    public void setId_user_creator(UUID id_user_creator) {
+        this.id_user_creator = id_user_creator;
     }
 }

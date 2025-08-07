@@ -16,6 +16,6 @@ public record TaskResponseDto(
         TaskStatus status,
         TaskPriority priority,
         LocalDate due_date,
-        Instant createdAt
-) {
+        Instant createdAt,
+        UUID id_user_creator) {
 }

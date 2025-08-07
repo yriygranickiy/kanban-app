@@ -1,5 +1,6 @@
 package com.kanban.task_service.controller;
 
+import com.kanban.task_service.dto.Task.TaskMoveRequestDto;
 import com.kanban.task_service.dto.Task.TaskPathDto;
 import com.kanban.task_service.dto.Task.TaskRequestDto;
 import com.kanban.task_service.dto.Task.TaskResponseDto;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,8 +27,8 @@ public class TaskController {
 
     @PreAuthorize("hasAuthority('CREATE_TASK')")
     @PostMapping("/create-task")
-    public ResponseEntity<TaskResponseDto> createTask(@RequestBody TaskRequestDto taskRequestDto) {
-        return ResponseEntity.ok(taskService.createTask(taskRequestDto));
+    public ResponseEntity<TaskResponseDto> createTask(@RequestBody TaskRequestDto taskRequestDto, @AuthenticationPrincipal UUID userId) {
+        return ResponseEntity.ok(taskService.createTask(taskRequestDto, userId));
     }
 
     @PreAuthorize("hasAuthority('READ_TASK')")
@@ -41,11 +43,23 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
+    @PreAuthorize("hasAuthority('READ_TASK')")
+    @GetMapping("/column/{id}/task")
+    public ResponseEntity<List<TaskResponseDto>> getTaskByColumnId(@PathVariable UUID id) {
+        return ResponseEntity.ok(taskService.getAllTasksByColumnId(id));
+    }
+
+    @PutMapping("/task/{task_id}/move")
+    public ResponseEntity<TaskResponseDto> moveTask(@PathVariable UUID task_id,
+                                                    @RequestBody TaskMoveRequestDto taskMoveRequestDto) {
+        return ResponseEntity.ok(taskService.moveTask(task_id, taskMoveRequestDto));
+    }
+
+
     @PreAuthorize("hasAnyAuthority('READ_TASK')")
     @GetMapping("/task/my")
-    public ResponseEntity<List<TaskResponseDto>> getAllTasksByUserId(Authentication authentication) {
-            UUID user_id = (UUID) authentication.getPrincipal();
-            return ResponseEntity.ok(taskService.getTasksByUserId(user_id));
+    public ResponseEntity<List<TaskResponseDto>> getAllTasksByUserId(@AuthenticationPrincipal UUID id) {
+            return ResponseEntity.ok(taskService.getTasksByUserId(id));
     }
 
     @PreAuthorize("hasAuthority('UPDATE_TASK')")
