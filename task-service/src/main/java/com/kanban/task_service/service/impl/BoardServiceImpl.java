@@ -7,7 +7,6 @@ import com.kanban.task_service.mapper.BoardMapper;
 import com.kanban.task_service.model.Board;
 import com.kanban.task_service.repository.BoardRepository;
 import com.kanban.task_service.service.BoardService;
-import com.kanban.task_service.util.SecurityUtilForUser;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,12 +25,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardResponseDto createBoard(BoardCreateRequestDto boardDto) {
-
+    public BoardResponseDto createBoard(BoardCreateRequestDto boardDto,UUID userId) {
          Board board = Board.builder()
-                 .id(SecurityUtilForUser.getUserId())
+                 .id(userId)
                  .name(boardDto.name())
                  .build();
+
          boardRepository.save(board);
 
          return boardMapper.toDto(board);
@@ -45,8 +44,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<BoardResponseDto> getAllBoards() {
-        List<Board> boards = boardRepository.findAll();
-        return boards.stream()
+        return boardRepository.findAll().stream()
                 .map(boardMapper::toDto)
                 .collect(Collectors.toList());
     }
@@ -62,6 +60,7 @@ public class BoardServiceImpl implements BoardService {
     public BoardResponseDto updateBoard(UUID boardId, BoardPatchDto boardPatchDto) {
         Board board = boardRepository.findById(boardId).orElseThrow(()->
                 new RuntimeException("Board not found"));
+
         boardMapper.updateBoard(boardPatchDto, board);
 
         boardRepository.save(board);

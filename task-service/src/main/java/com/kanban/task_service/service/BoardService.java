@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface BoardService {
 
-    BoardResponseDto createBoard(BoardCreateRequestDto board);
+    BoardResponseDto createBoard(BoardCreateRequestDto board,UUID userId);
     BoardResponseDto getBoardById(UUID id);
     List<BoardResponseDto> getAllBoards();
     List<BoardResponseDto> getBoardsByOwnerId(UUID ownerId);

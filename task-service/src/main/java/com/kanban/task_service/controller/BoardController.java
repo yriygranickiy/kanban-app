@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,17 +31,14 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getBoardById(id));
     }
 
-    @GetMapping("/board/debug")
-    public String getBoardDebug(Authentication authentication) {
-        return "Auth:"+ authentication.getAuthorities().toString();
-    }
-
     @PreAuthorize("hasAuthority('CREATE_BOARD')")
     @PostMapping("/create-board")
-    public ResponseEntity<BoardResponseDto> addBoard(@RequestBody BoardCreateRequestDto boardDto) {
-        System.out.println("Права и userId корректны, создаём задачу");
-        return new ResponseEntity<>(boardService.createBoard(boardDto), HttpStatus.CREATED);
+    public ResponseEntity<BoardResponseDto> addBoard(
+            @AuthenticationPrincipal UUID userId,
+            @RequestBody BoardCreateRequestDto boardDto) {
+        return new ResponseEntity<>(boardService.createBoard(boardDto,userId), HttpStatus.CREATED);
     }
+
     @PreAuthorize("hasAuthority('READ_BOARD')")
     @GetMapping("/all-boards")
     public ResponseEntity<List<BoardResponseDto>> getAllBoards() {

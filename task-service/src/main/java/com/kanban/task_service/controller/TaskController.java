@@ -27,7 +27,8 @@ public class TaskController {
 
     @PreAuthorize("hasAuthority('CREATE_TASK')")
     @PostMapping("/create-task")
-    public ResponseEntity<TaskResponseDto> createTask(@RequestBody TaskRequestDto taskRequestDto, @AuthenticationPrincipal UUID userId) {
+    public ResponseEntity<TaskResponseDto> createTask(@RequestBody TaskRequestDto taskRequestDto,
+                                                      @AuthenticationPrincipal UUID userId) {
         return ResponseEntity.ok(taskService.createTask(taskRequestDto, userId));
     }
 
