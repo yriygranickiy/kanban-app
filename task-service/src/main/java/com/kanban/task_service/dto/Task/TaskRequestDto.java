@@ -13,5 +13,6 @@ public record TaskRequestDto(
         UUID assigneeId,
         TaskStatus status,
         TaskPriority priority,
+        Integer position,
         LocalDate due_date
 ) {}

@@ -37,6 +37,9 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskPriority priority;
 
+    @jakarta.persistence.Column(name = "position")
+    private Integer position;
+
     private LocalDate due_date;
 
     @CreationTimestamp
@@ -119,5 +122,13 @@ public class Task {
 
     public void setId_user_creator(UUID id_user_creator) {
         this.id_user_creator = id_user_creator;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 }

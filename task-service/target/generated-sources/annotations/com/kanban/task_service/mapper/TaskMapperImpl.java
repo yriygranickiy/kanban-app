@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-08-07T10:19:28+0300",
+    date = "2025-08-11T15:36:44+0300",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.1 (Oracle Corporation)"
 )
 @Component
@@ -35,6 +35,7 @@ public class TaskMapperImpl implements TaskMapper {
         TaskPriority priority = null;
         LocalDate due_date = null;
         Instant createdAt = null;
+        Integer position = null;
         UUID id_user_creator = null;
 
         columnId = taskColumnId( task );
@@ -46,9 +47,10 @@ public class TaskMapperImpl implements TaskMapper {
         priority = task.getPriority();
         due_date = task.getDue_date();
         createdAt = task.getCreatedAt();
+        position = task.getPosition();
         id_user_creator = task.getId_user_creator();
 
-        TaskResponseDto taskResponseDto = new TaskResponseDto( id, title, description, columnId, assigneeId, status, priority, due_date, createdAt, id_user_creator );
+        TaskResponseDto taskResponseDto = new TaskResponseDto( id, title, description, columnId, assigneeId, status, priority, due_date, createdAt, position, id_user_creator );
 
         return taskResponseDto;
     }
