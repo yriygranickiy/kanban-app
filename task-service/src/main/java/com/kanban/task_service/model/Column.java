@@ -5,8 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -26,9 +24,6 @@ public class Column {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    @jakarta.persistence.Column(nullable = false)
-    private Integer position;
-
     @jakarta.persistence.Column(name = "task_limit")
     private Integer taskLimit;
 
@@ -37,8 +32,7 @@ public class Column {
     private Instant createdAt;
 
 
-    @OneToMany(mappedBy = "column", cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Task> tasks = new ArrayList<>();
+
 
     public UUID getId() {
         return id;
@@ -50,14 +44,6 @@ public class Column {
 
     public void setTaskLimit(Integer taskLimit) {
         this.taskLimit = taskLimit;
-    }
-
-    public Integer getPosition() {
-        return position;
-    }
-
-    public void setPosition(Integer position) {
-        this.position = position;
     }
 
     public Board getBoard() {
@@ -74,14 +60,6 @@ public class Column {
 
     public void setColumnName(String columnName) {
         this.columnName = columnName;
-    }
-
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
     }
 
     public Instant getCreatedAt() {

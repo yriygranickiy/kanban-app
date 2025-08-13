@@ -14,7 +14,4 @@ import java.util.UUID;
 @Repository
 public interface ColumnRepository extends JpaRepository<Column, UUID> {
 
-    @Query("SELECT COALESCE(MAX(c.position), 0) from Column c where c.board.id = :boardId")
-    int findMaxPositionByBoard(@Param("boardId") UUID boardId);
-
 }

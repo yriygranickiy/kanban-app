@@ -13,3 +13,7 @@ databaseChangeLog:
       file: db/changelog/changes/add_creator_id_user_task.sql
   - include:
       file: db/changelog/changes/add_position_in_task.sql
+  - include:
+      file: db/changelog/changes/delete_position_in_table_task.sql
+  - include:
+      file: db/changelog/changes/delete_position_in_table_column.sql

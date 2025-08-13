@@ -8,7 +8,6 @@ public record ColumnResponseDto(
         String columnName,
         UUID boardId,
         Integer taskLimit,
-        Integer position,
         Instant createdAt
 ) {
 }

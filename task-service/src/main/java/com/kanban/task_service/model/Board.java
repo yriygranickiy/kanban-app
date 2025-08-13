@@ -30,7 +30,6 @@ public class Board {
     @jakarta.persistence.Column(name="created_at", updatable = false)
     private Instant createdAt;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Column> columns;
+
 
 }

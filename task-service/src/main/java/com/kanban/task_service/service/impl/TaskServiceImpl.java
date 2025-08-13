@@ -25,16 +25,13 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final ColumnRepository columnRepository;
     private final TaskMapper taskMapper;
-    private final TaskPositionService taskPositionService;
 
     public TaskServiceImpl(TaskRepository taskRepository,
                            ColumnRepository columnRepository,
-                           TaskMapper taskMapper,
-                           TaskPositionService taskPositionService) {
+                           TaskMapper taskMapper) {
         this.taskRepository = taskRepository;
         this.columnRepository = columnRepository;
         this.taskMapper = taskMapper;
-        this.taskPositionService = taskPositionService;
     }
 
     @Override
@@ -42,17 +39,6 @@ public class TaskServiceImpl implements TaskService {
         Column column = getColumnId(requestDto.columnId());
 
         int count = taskRepository.countByColumn(column);
-
-        int position;
-
-        if (requestDto.position() == null) {
-            position = taskRepository.findByMaxPositionByColumnId(requestDto.columnId())
-                    .map(maxPosition->maxPosition+1)
-                    .orElse(1);
-        }else {
-            taskPositionDown(column.getId(), requestDto.position());
-            position = requestDto.position();
-        }
 
         if (column.getTaskLimit() != null && count >= column.getTaskLimit()) {
             throw new IllegalStateException("Task limit for this column has been reached.");
@@ -62,7 +48,6 @@ public class TaskServiceImpl implements TaskService {
                 .title(requestDto.title())
                 .description(requestDto.description())
                 .due_date(requestDto.due_date())
-                .position(position)
                 .assigneeId(requestDto.assigneeId() != null ? requestDto.assigneeId() : userId)
                 .id_user_creator(userId)
                 .status(requestDto.status())
@@ -137,17 +122,10 @@ public class TaskServiceImpl implements TaskService {
         Column newColumn = columnRepository.findById(requestDto.id_column()).orElseThrow(()->
                 new EntityNotFoundException("Column not found"));
 
-        //move in own column
-        Integer newPosition = requestDto.position();
+
         if (oldColumn.getId().equals(newColumn.getId())) {
-            if(requestDto.position() == null) {
-                taskPositionService.moveTaskPositionInColumn(oldColumn.getId(),task.getPosition(),newPosition);
-                task.setPosition(newPosition);
-                taskRepository.save(task);
-            }
             return taskMapper.toDto(task);
         }
-
 
         //chek limit in new column
         int count = taskRepository.countByColumn(task.getColumn());
@@ -156,38 +134,16 @@ public class TaskServiceImpl implements TaskService {
         }
 
 
-        //delete old position
-        taskPositionService.removeTaskFromOldPosition(oldColumn.getId(),task.getPosition());
-
-
-        int targetPosition;
-        if (requestDto.position() == null) {
-            targetPosition = taskRepository.findByMaxPositionByColumnId(newColumn.getId()).orElse(0)+1;
-        }else {
-            targetPosition = requestDto.position();
-            taskPositionService.insertAt(newColumn.getId(),targetPosition);
-        }
-
         TaskStatus status = updateStatus(newColumn.getColumnName());
         task.setStatus(status);
         task.setColumn(newColumn);
-        task.setPosition(targetPosition);
 
         return taskMapper.toDto(taskRepository.save(task));
     }
 
     @Override
     public void deleteTaskById(UUID id) {
-        Task task = taskRepository.findById(id).orElseThrow(()->
-                new EntityNotFoundException("Task not found"));
-
-        UUID columnId = task.getColumn().getId();
-        int deletedTask = task.getPosition();
-
         taskRepository.deleteById(id);
-
-        taskPositionUp(columnId, deletedTask);
-
     }
 
     private Column getColumnId(UUID id) {
@@ -204,21 +160,7 @@ public class TaskServiceImpl implements TaskService {
         };
     }
 
-    private void taskPositionDown(UUID id, Integer position) {
-        List<Task> tasks = taskRepository.findByColumnIdAndPositionGreaterOrEqual(id,position);
-        for (Task task : tasks) {
-            task.setPosition(task.getPosition() + 1);
-        }
-        taskRepository.saveAll(tasks);
-    }
 
-    private void taskPositionUp(UUID id, Integer position) {
-        List<Task> tasks = taskRepository.findByColumnIdAndPositionGreater(id,position);
-        for (Task task : tasks) {
-            task.setPosition(task.getPosition() - 1);
-        }
-        taskRepository.saveAll(tasks);
-    }
 }
 
 

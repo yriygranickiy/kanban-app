@@ -1,6 +1,5 @@
 package com.kanban.task_service.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -36,9 +35,6 @@ public class Task {
 
     @Enumerated(EnumType.STRING)
     private TaskPriority priority;
-
-    @jakarta.persistence.Column(name = "position")
-    private Integer position;
 
     private LocalDate due_date;
 
@@ -124,11 +120,4 @@ public class Task {
         this.id_user_creator = id_user_creator;
     }
 
-    public Integer getPosition() {
-        return position;
-    }
-
-    public void setPosition(Integer position) {
-        this.position = position;
-    }
 }

@@ -5,6 +5,5 @@ import java.util.UUID;
 public record ColumnPatchDto(
         String column_name,
         UUID boardId,
-        Integer taskLimit,
-        Integer position
+        Integer taskLimit
 ) {}

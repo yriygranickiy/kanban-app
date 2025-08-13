@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-08-11T15:36:44+0300",
+    date = "2025-08-13T13:59:02+0300",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.1 (Oracle Corporation)"
 )
 @Component
@@ -27,15 +27,15 @@ public class ColumnMapperImpl implements ColumnMapper {
         UUID id = null;
         String columnName = null;
         Integer taskLimit = null;
-        Integer position = null;
         Instant createdAt = null;
 
         boardId = columnBoardId( column );
         id = column.getId();
         columnName = column.getColumnName();
         taskLimit = column.getTaskLimit();
-        position = column.getPosition();
         createdAt = column.getCreatedAt();
+
+        Integer position = null;
 
         ColumnResponseDto columnResponseDto = new ColumnResponseDto( id, columnName, boardId, taskLimit, position, createdAt );
 
@@ -50,9 +50,6 @@ public class ColumnMapperImpl implements ColumnMapper {
 
         if ( dto.taskLimit() != null ) {
             column.setTaskLimit( dto.taskLimit() );
-        }
-        if ( dto.position() != null ) {
-            column.setPosition( dto.position() );
         }
     }
 

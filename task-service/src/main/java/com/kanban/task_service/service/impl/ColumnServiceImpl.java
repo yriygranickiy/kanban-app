@@ -35,12 +35,10 @@ public class ColumnServiceImpl implements ColumnService {
         Board board = boardRepository.findById(request.boardId()).orElseThrow(()->
                 new RuntimeException("Board not found"));
 
-        int nextPosition = columnRepository.findMaxPositionByBoard(board.getId())+1;
 
         Column column = Column.builder()
                 .columnName(request.columnName())
                 .board(board)
-                .position(nextPosition)
                 .taskLimit(request.task_limit())
                 .build();
 
