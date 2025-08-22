@@ -8,4 +8,7 @@ import java.util.UUID;
 public interface AccountsService {
 
     void existAccount(UUID id,String email);
+
+    Accounts getAccountById(UUID id);
+
 }

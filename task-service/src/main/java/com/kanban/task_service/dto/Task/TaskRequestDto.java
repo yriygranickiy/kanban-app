@@ -9,7 +9,7 @@ import java.util.UUID;
 public record TaskRequestDto(
         String title,
         String description,
-        UUID columnId,
+        UUID boardId,
         UUID assigneeId,
         TaskStatus status,
         TaskPriority priority,

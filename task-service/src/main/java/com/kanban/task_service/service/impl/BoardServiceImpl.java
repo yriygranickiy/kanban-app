@@ -1,6 +1,6 @@
 package com.kanban.task_service.service.impl;
 
-import com.kanban.task_service.dto.Board.BoardCreateRequestDto;
+import com.kanban.task_service.dto.Board.BoardRequestDto;
 import com.kanban.task_service.dto.Board.BoardPatchDto;
 import com.kanban.task_service.dto.Board.BoardResponseDto;
 import com.kanban.task_service.mapper.BoardMapper;
@@ -25,7 +25,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardResponseDto createBoard(BoardCreateRequestDto boardDto,UUID userId) {
+    public BoardResponseDto createBoard(BoardRequestDto boardDto, UUID userId) {
          Board board = Board.builder()
                  .id(userId)
                  .name(boardDto.name())

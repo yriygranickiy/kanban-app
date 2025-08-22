@@ -1,7 +1,7 @@
 package com.kanban.task_service.service;
 
 
-import com.kanban.task_service.dto.Board.BoardCreateRequestDto;
+import com.kanban.task_service.dto.Board.BoardRequestDto;
 import com.kanban.task_service.dto.Board.BoardPatchDto;
 import com.kanban.task_service.dto.Board.BoardResponseDto;
 
@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface BoardService {
 
-    BoardResponseDto createBoard(BoardCreateRequestDto board,UUID userId);
+    BoardResponseDto createBoard(BoardRequestDto board, UUID userId);
     BoardResponseDto getBoardById(UUID id);
     List<BoardResponseDto> getAllBoards();
     List<BoardResponseDto> getBoardsByOwnerId(UUID ownerId);

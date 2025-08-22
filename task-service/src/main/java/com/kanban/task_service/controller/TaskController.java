@@ -44,11 +44,6 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
-    @PreAuthorize("hasAuthority('READ_TASK')")
-    @GetMapping("/column/{id}/task")
-    public ResponseEntity<List<TaskResponseDto>> getTaskByColumnId(@PathVariable UUID id) {
-        return ResponseEntity.ok(taskService.getAllTasksByColumnId(id));
-    }
 
     @PutMapping("/task/{task_id}/move")
     public ResponseEntity<TaskResponseDto> moveTask(@PathVariable UUID task_id,

@@ -17,3 +17,13 @@ databaseChangeLog:
       file: db/changelog/changes/delete_position_in_table_task.sql
   - include:
       file: db/changelog/changes/delete_position_in_table_column.sql
+  - include:
+      file: db/changelog/changes/add_board_columns_table.sql
+  - include:
+      file: db/changelog/changes/add_column_tasks_table.sql
+  - include:
+      file: db/changelog/changes/delete_board_id_in_table_column.sql
+  - include:
+      file: db/changelog/changes/add_board_id_in_column_task_table.sql
+  - include:
+      file: db/changelog/changes/delete_column_id_in_table_task.sql

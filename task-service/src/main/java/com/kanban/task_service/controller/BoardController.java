@@ -1,13 +1,12 @@
 package com.kanban.task_service.controller;
 
-import com.kanban.task_service.dto.Board.BoardCreateRequestDto;
+import com.kanban.task_service.dto.Board.BoardRequestDto;
 import com.kanban.task_service.dto.Board.BoardPatchDto;
 import com.kanban.task_service.dto.Board.BoardResponseDto;
 import com.kanban.task_service.service.BoardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +23,6 @@ public class BoardController {
         this.boardService = boardService;
     }
 
-
     @PreAuthorize("hasAuthority('READ_BOARD')")
     @GetMapping("/board/{id}")
     public ResponseEntity<BoardResponseDto> getBoard(@PathVariable UUID id) {
@@ -33,10 +31,8 @@ public class BoardController {
 
     @PreAuthorize("hasAuthority('CREATE_BOARD')")
     @PostMapping("/create-board")
-    public ResponseEntity<BoardResponseDto> addBoard(
-            @AuthenticationPrincipal UUID userId,
-            @RequestBody BoardCreateRequestDto boardDto) {
-        return new ResponseEntity<>(boardService.createBoard(boardDto,userId), HttpStatus.CREATED);
+    public ResponseEntity<BoardResponseDto> addBoard(@AuthenticationPrincipal UUID userId, @RequestBody BoardRequestDto boardDto) {
+        return new ResponseEntity<>(boardService.createBoard(boardDto, userId), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAuthority('READ_BOARD')")
@@ -47,10 +43,10 @@ public class BoardController {
 
     @PreAuthorize("hasAuthority('UPDATE_BOARD')")
     @PatchMapping("/update-board/{id}")
-    public ResponseEntity<BoardResponseDto> updateBoard(@PathVariable UUID id,
-                                                        @RequestBody BoardPatchDto dto){
+    public ResponseEntity<BoardResponseDto> updateBoard(@PathVariable UUID id, @RequestBody BoardPatchDto dto) {
         return ResponseEntity.ok(boardService.updateBoard(id, dto));
     }
+
     @PreAuthorize("hasAuthority('DELETE_BOARD')")
     @DeleteMapping("/delete-board/{id}")
     public void deleteBoard(@PathVariable UUID id) {

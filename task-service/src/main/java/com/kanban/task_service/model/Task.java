@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -23,10 +25,6 @@ public class Task {
 
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "column_id", nullable = false)
-    private Column column;
-
     @jakarta.persistence.Column(name = "assignee_id")
     private UUID assigneeId;
 
@@ -43,6 +41,9 @@ public class Task {
     private Instant createdAt;
 
     private UUID id_user_creator;
+
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<ColumnBoardTasks> columnBoardTasks = new ArrayList<>();
 
     public UUID getId() {
         return id;
@@ -62,14 +63,6 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Column getColumn() {
-        return column;
-    }
-
-    public void setColumn(Column column) {
-        this.column = column;
     }
 
     public UUID getAssigneeId() {
@@ -120,4 +113,11 @@ public class Task {
         this.id_user_creator = id_user_creator;
     }
 
+    public List<ColumnBoardTasks> getColumnBoardTasks() {
+        return columnBoardTasks;
+    }
+
+    public void setColumnBoardTasks(List<ColumnBoardTasks> columnBoardTasks) {
+        this.columnBoardTasks = columnBoardTasks;
+    }
 }

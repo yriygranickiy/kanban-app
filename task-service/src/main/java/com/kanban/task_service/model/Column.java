@@ -5,6 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -20,10 +22,6 @@ public class Column {
     @jakarta.persistence.Column(name = "name")
     private String columnName;
 
-    @ManyToOne
-    @JoinColumn(name = "board_id")
-    private Board board;
-
     @jakarta.persistence.Column(name = "task_limit")
     private Integer taskLimit;
 
@@ -31,6 +29,11 @@ public class Column {
     @jakarta.persistence.Column(name = "created_at")
     private Instant createdAt;
 
+    @OneToMany(mappedBy = "column", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<BoardColumns> boardColumns = new ArrayList<>();
+
+    @OneToMany(mappedBy = "column",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ColumnBoardTasks> columnTasks = new ArrayList<>();
 
 
 
@@ -46,13 +49,6 @@ public class Column {
         this.taskLimit = taskLimit;
     }
 
-    public Board getBoard() {
-        return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
-    }
 
     public String getColumnName() {
         return columnName;
@@ -68,5 +64,25 @@ public class Column {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<BoardColumns> getBoardColumns() {
+        return boardColumns;
+    }
+
+    public void setBoardColumns(List<BoardColumns> boardColumns) {
+        this.boardColumns = boardColumns;
+    }
+
+    public List<ColumnBoardTasks> getColumnTasks() {
+        return columnTasks;
+    }
+
+    public void setColumnTasks(List<ColumnBoardTasks> columnTasks) {
+        this.columnTasks = columnTasks;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }

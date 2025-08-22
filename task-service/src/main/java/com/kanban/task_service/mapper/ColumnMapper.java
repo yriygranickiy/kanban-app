@@ -10,7 +10,6 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface ColumnMapper {
 
-     @Mapping(source = "board.id", target = "boardId")
      ColumnResponseDto toDto(Column column);
 
      @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

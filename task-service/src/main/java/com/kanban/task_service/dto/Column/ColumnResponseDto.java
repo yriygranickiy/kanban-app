@@ -6,7 +6,6 @@ import java.util.UUID;
 public record ColumnResponseDto(
         UUID id,
         String columnName,
-        UUID boardId,
         Integer taskLimit,
         Instant createdAt
 ) {

@@ -4,6 +4,7 @@ package com.kanban.task_service.service.impl;
 import com.kanban.task_service.model.Accounts;
 import com.kanban.task_service.repository.AccountRepository;
 import com.kanban.task_service.service.AccountsService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,5 +26,11 @@ public class AccountsServiceImpl implements AccountsService {
                     .build();
             return accountRepository.save(account);
         });
+    }
+
+    @Override
+    public Accounts getAccountById(UUID id) {
+        return accountRepository.findById(id).orElseThrow(()->
+               new EntityNotFoundException("Account not found"));
     }
 }

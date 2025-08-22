@@ -9,9 +9,11 @@ import com.kanban.task_service.model.Column;
 import com.kanban.task_service.repository.BoardRepository;
 import com.kanban.task_service.repository.ColumnRepository;
 import com.kanban.task_service.service.ColumnService;
+import com.kanban.task_service.service.ColumnToBoardService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -22,27 +24,32 @@ public class ColumnServiceImpl implements ColumnService {
     private final ColumnRepository columnRepository;
     private final BoardRepository boardRepository;
     private final ColumnMapper columnMapper;
+    private final ColumnToBoardService columnToBoardService;
 
 
-    public ColumnServiceImpl(ColumnRepository columnRepository, BoardRepository boardRepository, ColumnMapper columnMapper) {
+    public ColumnServiceImpl(ColumnRepository columnRepository,
+                             BoardRepository boardRepository,
+                             ColumnMapper columnMapper,
+                             ColumnToBoardService columnToBoardService) {
         this.columnRepository = columnRepository;
         this.boardRepository = boardRepository;
         this.columnMapper = columnMapper;
+        this.columnToBoardService = columnToBoardService;
     }
 
     @Override
     public ColumnResponseDto createColumn(ColumnRequestDto request) {
-        Board board = boardRepository.findById(request.boardId()).orElseThrow(()->
-                new RuntimeException("Board not found"));
+
+        Board board = boardRepository.findBoardById(request.boardId());
 
 
         Column column = Column.builder()
                 .columnName(request.columnName())
-                .board(board)
                 .taskLimit(request.task_limit())
                 .build();
-
         columnRepository.save(column);
+
+        columnToBoardService.createColumnToBoard(column, board);
 
         return columnMapper.toDto(column);
     }
@@ -64,12 +71,6 @@ public class ColumnServiceImpl implements ColumnService {
     public ColumnResponseDto updateColumn(UUID id, ColumnPatchDto dto) {
         Column column = columnRepository.findById(id).orElseThrow(()->
                 new EntityNotFoundException("Column not found"));
-
-        if (dto.boardId() != null) {
-            Board board = boardRepository.findById(dto.boardId())
-                    .orElseThrow(() -> new EntityNotFoundException("Board not found"));
-            column.setBoard(board);
-        }
 
         columnMapper.updateColumn(dto,column);
 
