@@ -7,7 +7,6 @@ import com.kanban.task_service.dto.Task.TaskResponseDto;
 import com.kanban.task_service.mapper.TaskMapper;
 import com.kanban.task_service.model.*;
 import com.kanban.task_service.repository.BoardRepository;
-import com.kanban.task_service.repository.ColumnRepository;
 import com.kanban.task_service.repository.TaskRepository;
 import com.kanban.task_service.service.AccountsService;
 import com.kanban.task_service.service.TaskService;
@@ -23,20 +22,17 @@ import java.util.stream.Collectors;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
-    private final ColumnRepository columnRepository;
     private final TaskMapper taskMapper;
     private final TaskToColumnService taskToColumnService;
     private final AccountsService accountsService;
     private final BoardRepository boardRepository;
 
     public TaskServiceImpl(TaskRepository taskRepository,
-                           ColumnRepository columnRepository,
                            BoardRepository boardRepository,
                            TaskMapper taskMapper,
                            AccountsService accountsService,
                            TaskToColumnService taskToColumnService) {
         this.taskRepository = taskRepository;
-        this.columnRepository = columnRepository;
         this.taskMapper = taskMapper;
         this.accountsService = accountsService;
         this.taskToColumnService = taskToColumnService;

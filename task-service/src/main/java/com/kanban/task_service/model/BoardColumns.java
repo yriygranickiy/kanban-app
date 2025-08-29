@@ -17,6 +17,7 @@ import java.util.UUID;
 public class BoardColumns {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)

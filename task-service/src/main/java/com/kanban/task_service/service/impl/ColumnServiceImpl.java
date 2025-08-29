@@ -56,9 +56,9 @@ public class ColumnServiceImpl implements ColumnService {
 
     @Override
     public List<ColumnResponseDto> getAllColumns() {
-            List<Column> list = columnRepository.findAll().stream()
-                    .toList();
-            return list.stream().map(columnMapper::toDto).collect(Collectors.toList());
+           return columnRepository.findAll().stream()
+                   .map(columnMapper::toDto)
+                   .collect(Collectors.toList());
     }
 
     @Override
