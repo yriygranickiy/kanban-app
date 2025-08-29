@@ -19,6 +19,9 @@ import java.util.UUID;
 @RequestMapping("/api/todo")
 public class TaskController {
 
+    //TODO: глянуть как сделать и сделать фильтр для будующего
+    //TODO: сделать exception для эндпоинтов на которых нет прав для того что бы понимать что нет прав на запрос этой урлы
+
     private final TaskService taskService;
 
     public TaskController(TaskService taskService) {
@@ -43,7 +46,6 @@ public class TaskController {
     public ResponseEntity<TaskResponseDto> getTaskById(@PathVariable UUID id) {
         return ResponseEntity.ok(taskService.getTaskById(id));
     }
-
 
     @PutMapping("/task/{task_id}/move")
     public ResponseEntity<TaskResponseDto> moveTask(@PathVariable UUID task_id,
