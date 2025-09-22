@@ -4,6 +4,7 @@ import com.kanban.task_service.dto.Board.BoardRequestDto;
 import com.kanban.task_service.dto.Board.BoardPatchDto;
 import com.kanban.task_service.dto.Board.BoardResponseDto;
 import com.kanban.task_service.service.BoardService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,8 +32,8 @@ public class BoardController {
 
     @PreAuthorize("hasAuthority('CREATE_BOARD')")
     @PostMapping("/create-board")
-    public ResponseEntity<BoardResponseDto> addBoard(@AuthenticationPrincipal UUID userId, @RequestBody BoardRequestDto boardDto) {
-        return new ResponseEntity<>(boardService.createBoard(boardDto, userId), HttpStatus.CREATED);
+    public ResponseEntity<BoardResponseDto> addBoard(@AuthenticationPrincipal UUID userId,@RequestBody @Valid  BoardRequestDto boardDto) {
+        return ResponseEntity.ok(boardService.createBoard(boardDto, userId));
     }
 
     @PreAuthorize("hasAuthority('READ_BOARD')")

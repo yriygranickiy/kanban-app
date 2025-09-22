@@ -27,7 +27,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardResponseDto createBoard(BoardRequestDto boardDto, UUID userId) {
          Board board = Board.builder()
-                 .id(userId)
+                 .ownerId(userId)
                  .name(boardDto.name())
                  .build();
 
