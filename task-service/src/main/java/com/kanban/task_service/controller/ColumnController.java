@@ -4,6 +4,7 @@ import com.kanban.task_service.dto.Column.ColumnPatchDto;
 import com.kanban.task_service.dto.Column.ColumnRequestDto;
 import com.kanban.task_service.dto.Column.ColumnResponseDto;
 import com.kanban.task_service.service.ColumnService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class ColumnController {
 
     @PreAuthorize("hasAuthority('CREATE_COLUMN')")
     @PostMapping("/create-column")
-    public ResponseEntity<ColumnResponseDto> addColumn(@RequestBody ColumnRequestDto columnRequestDto) {
+    public ResponseEntity<ColumnResponseDto> addColumn(@RequestBody @Valid ColumnRequestDto columnRequestDto) {
         return ResponseEntity.ok(columnService.createColumn(columnRequestDto));
     }
 
