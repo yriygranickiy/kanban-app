@@ -23,7 +23,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
@@ -32,6 +31,17 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
+    public AuthServiceImpl(UserRepository userRepository,
+                           RoleRepository roleRepository,
+                           JwtUtil jwtUtil,
+                           PasswordEncoder passwordEncoder,
+                           UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
+    }
 
     @Override
     public UserDTO register(RegisterRequest registerRequest) {

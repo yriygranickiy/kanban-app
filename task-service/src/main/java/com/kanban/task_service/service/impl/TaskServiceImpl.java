@@ -116,6 +116,6 @@ public class TaskServiceImpl implements TaskService {
         return boardRepository.findById(id).orElseThrow(()->
                 new EntityNotFoundException("Board not found"));
     }
-}
+ }
 
 

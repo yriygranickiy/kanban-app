@@ -15,11 +15,13 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Component
-@RequiredArgsConstructor
 public class AuthenticationFilter implements GatewayFilter {
 
     private final WebClient authServiceWebClient;
 
+    public AuthenticationFilter(WebClient authServiceWebClient) {
+        this.authServiceWebClient = authServiceWebClient;
+    }
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
