@@ -1,9 +1,6 @@
 package com.kanban.task_service.controller;
 
-import com.kanban.task_service.dto.Task.TaskMoveRequestDto;
-import com.kanban.task_service.dto.Task.TaskPathDto;
-import com.kanban.task_service.dto.Task.TaskRequestDto;
-import com.kanban.task_service.dto.Task.TaskResponseDto;
+import com.kanban.task_service.dto.Task.*;
 import com.kanban.task_service.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -20,7 +17,6 @@ import java.util.UUID;
 @RequestMapping("/api/todo")
 public class TaskController {
 
-    //TODO: глянуть как сделать и сделать фильтр для будующего
     //TODO: сделать exception для эндпоинтов на которых нет прав для того что бы понимать что нет прав на запрос этой урлы
 
     private final TaskService taskService;
@@ -34,6 +30,12 @@ public class TaskController {
     public ResponseEntity<TaskResponseDto> createTask(@RequestBody @Valid TaskRequestDto taskRequestDto,
                                                       @AuthenticationPrincipal UUID userId) {
         return ResponseEntity.ok(taskService.createTask(taskRequestDto, userId));
+    }
+
+    @PreAuthorize("hasAuthority('READ_TASK')")
+    @GetMapping("/task/filter")
+    public ResponseEntity<List<TaskResponseDto>> findAllByFilter(@ModelAttribute TaskFilter taskFilter) {
+        return ResponseEntity.ok(taskService.getAllTasksByFilter(taskFilter));
     }
 
     @PreAuthorize("hasAuthority('READ_TASK')")

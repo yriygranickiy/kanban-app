@@ -12,8 +12,4 @@ public record TaskFilter(
         TaskStatus status,
         Instant createdAfter,
         Instant createdBefore
-) {
-    public TaskFilter toFilter() {
-        return new TaskFilter(boardId, columnId, assignedId, status, createdAfter, createdBefore);
-    }
-}
+) { }

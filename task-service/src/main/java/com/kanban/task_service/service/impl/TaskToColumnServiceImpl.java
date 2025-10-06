@@ -42,7 +42,8 @@ public class TaskToColumnServiceImpl implements TaskToColumnService {
     @Transactional
     @Override
     public void moveTaskToColumnAndBoard(UUID taskId, TaskMoveRequestDto requestDto) {
-        ColumnBoardTasks columnBoardTasks = columnTaskRepository.findByTaskIdAndBoardId(taskId, requestDto.board_id()).orElseThrow(() -> new EntityNotFoundException("Column Board Tasks not found"));
+        ColumnBoardTasks columnBoardTasks = columnTaskRepository.findByTaskIdAndBoardId(taskId, requestDto.board_id())
+                .orElseThrow(() -> new EntityNotFoundException("Column Board Tasks not found"));
 
         UUID sourceColumnId = columnBoardTasks.getColumn().getId();
 

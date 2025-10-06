@@ -1,9 +1,6 @@
 package com.kanban.task_service.service;
 
-import com.kanban.task_service.dto.Task.TaskMoveRequestDto;
-import com.kanban.task_service.dto.Task.TaskPathDto;
-import com.kanban.task_service.dto.Task.TaskRequestDto;
-import com.kanban.task_service.dto.Task.TaskResponseDto;
+import com.kanban.task_service.dto.Task.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,6 +8,7 @@ import java.util.UUID;
 public interface TaskService {
     TaskResponseDto createTask(TaskRequestDto taskRequestDto,UUID userId);
     List<TaskResponseDto> getAllTasks();
+    List<TaskResponseDto> getAllTasksByFilter(TaskFilter taskFilter);
     TaskResponseDto getTaskById(UUID id);
     List<TaskResponseDto> getTasksByUserId(UUID user_id);
     TaskResponseDto updateTask(UUID id, TaskPathDto dto);

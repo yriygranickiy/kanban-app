@@ -1,9 +1,6 @@
 package com.kanban.task_service.service.impl;
 
-import com.kanban.task_service.dto.Task.TaskMoveRequestDto;
-import com.kanban.task_service.dto.Task.TaskPathDto;
-import com.kanban.task_service.dto.Task.TaskRequestDto;
-import com.kanban.task_service.dto.Task.TaskResponseDto;
+import com.kanban.task_service.dto.Task.*;
 import com.kanban.task_service.mapper.TaskMapper;
 import com.kanban.task_service.model.*;
 import com.kanban.task_service.repository.BoardRepository;
@@ -20,6 +17,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class TaskServiceImpl implements TaskService {
+
+    //TODO: сделать сортировку по позиции
 
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
@@ -66,6 +65,13 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskResponseDto> getAllTasks() {
         return taskRepository.findAll().stream()
+                .map(taskMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskResponseDto> getAllTasksByFilter(TaskFilter taskFilter) {
+        return taskRepository.findAllbyFilter(taskFilter).stream()
                 .map(taskMapper::toDto)
                 .collect(Collectors.toList());
     }

@@ -21,9 +21,6 @@ public interface ColumnBoardTaskRepository extends JpaRepository<ColumnBoardTask
 
     Optional<ColumnBoardTasks> findByTaskIdAndBoardId(UUID columnId, UUID boardId);
 
-    List<ColumnBoardTasks> findByBoardIdAndColumnIdOrderByPosition(UUID boardId, UUID columnId);
-
-
     @Modifying
     @Query("update ColumnBoardTasks ct " +
             "set ct.position = ct.position - 1 " +
